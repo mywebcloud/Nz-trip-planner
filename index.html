@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>NZ Trip Planner</title>
+  <style>
+    :root{
+      --bg:#F2F2F7;
+      --card:#FFFFFF;
+      --text:#111827;
+      --muted:#6B7280;
+      --border:#E5E7EB;
+      --accent:#0B2A4A;
+      --danger:#B42318;
+      --warn:#B91C1C;
+      --pill:#F3F4F6;
+      --shadow: 0 1px 10px rgba(0,0,0,.06);
+      font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      background:var(--bg);
+      overflow-x:hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+    a{ color: var(--accent); text-decoration:none; }
+    a:active{ opacity:.75; }
+    header{
+      background: var(--accent);
+      color:#fff;
+      padding: calc(12px + env(safe-area-inset-top)) 14px 12px;
+    }
+    header h1{ margin:0; font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+    header p{ margin:6px 0 0; font-size:13px; opacity:.9; line-height:1.3; }
+
+    .wrap{ max-width: 1100px; margin:0 auto; padding: 12px 12px calc(24px + env(safe-area-inset-bottom)); }
+    .toolbar{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--bg);
+      padding: 10px 0 8px;
+    }
+    .toolbarRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .btn{
+      min-height:44px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    .btnPrimary{
+      background: var(--accent);
+      color:#fff;
+      border-color: rgba(255,255,255,.2);
+      box-shadow: none;
+    }
+    .btnDanger{
+      background: #fff;
+      color: var(--danger);
+      border-color: rgba(180,35,24,.25);
+    }
+    .btnGhost{
+      background: transparent;
+      border-color: transparent;
+      box-shadow:none;
+      color: #fff;
+      padding: 8px 10px;
+      min-height: 36px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .hint{ font-size: 12px; color: var(--muted); line-height: 1.3; }
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      margin: 10px 0;
+      overflow:hidden;
+    }
+    .sectionTitle{
+      margin: 14px 2px 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .dayHeader{
+      margin: 14px 2px 6px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing:-0.01em;
+    }
+
+    .pills{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .pill{
+      background: var(--pill);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .pillWarn{ border-color: rgba(185,28,28,.25); color: var(--warn); background: #FEF2F2; }
+    .pillFree{ border-color: rgba(16,185,129,.25); background: #ECFDF5; color:#065F46; }
+    .pillLow{ border-color: rgba(16,185,129,.25); background:#ECFDF5; color:#065F46;}
+    .pillMed{ border-color: rgba(245,158,11,.25); background:#FFFBEB; color:#92400E;}
+
+    label{ display:block; font-size: 12px; color: var(--muted); margin: 8px 0 6px; }
+    input, select{
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 14px;
+      color: var(--text);
+    }
+    textarea{
+      width:100%;
+      min-height: 160px;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      font-size: 13px;
+    }
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 560px){
+      .grid2{ grid-template-columns: 1fr; }
+      .toolbarRow{ flex-wrap: wrap; }
+      .btn{ flex: 1; }
+    }
+
+    .itTop{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+    .itTitle{ font-weight: 800; font-size: 15px; line-height: 1.2; }
+    .itDesc{ margin-top:6px; font-size: 13px; color: var(--muted); line-height: 1.35; }
+    .itLinks{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .linkBtn{
+      min-height: 40px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Drawer */
+    #drawerBackdrop{
+      display:none;
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.35);
+      z-index: 50;
+    }
+    #drawer{
+      position:fixed;
+      top:0; left:0;
+      width: min(92vw, 420px);
+      height: 100vh;
+      background: var(--bg);
+      transform: translateX(-105%);
+      transition: transform 220ms ease;
+      z-index: 60;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding: calc(12px + env(safe-area-inset-top)) 12px 18px;
+    }
+    body.drawerOpen #drawer{ transform: translateX(0); }
+    body.drawerOpen #drawerBackdrop{ display:block; }
+    body.drawerOpen{ overflow:hidden; }
+
+    .drawerHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 2px 2px 8px;
+    }
+    .drawerHeader h2{
+      margin:0;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing:-0.01em;
+    }
+
+    details{
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 16px;
+      padding: 10px 12px;
+      box-shadow: var(--shadow);
+      margin-top: 10px;
+    }
+    summary{
+      list-style:none;
+      cursor:pointer;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--text);
+    }
+    summary::-webkit-details-marker{ display:none; }
+
+    .suggTitle{ font-weight: 800; font-size: 14px; }
+    .suggDesc{ margin-top:6px; font-size: 13px; color: var(--muted); line-height: 1.35; }
+    .suggFooter{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center; justify-content:space-between; }
+  </style>
+</head>
+<body>
+<header>
+  <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+    <div>
+      <h1>NZ Trip Planner</h1>
+      <p>Mobile-friendly itinerary editor (Auckland base + trips). Tap “Filters” to adjust options.</p>
+    </div>
+    <button id="openDrawer" class="btnGhost">Filters</button>
+  </div>
+</header>
+
+<div id="drawerBackdrop"></div>
+<aside id="drawer" aria-label="Filters and settings">
+  <div class="drawerHeader">
+    <h2>Filters & Settings</h2>
+    <button id="closeDrawer" class="btn">Close</button>
+  </div>
+
+  <div class="card" style="box-shadow:none; margin-top:0;">
+    <label>Daily budget (NZD)</label>
+    <input id="budDay" type="number" min="0" step="10" value="180" />
+    <div class="hint" style="margin-top:6px;">Items over budget are flagged (nothing gets hidden).</div>
+
+    <div class="grid2" style="margin-top:10px;">
+      <div>
+        <label>Walking tolerance</label>
+        <select id="walkFilter">
+          <option value="any">Any</option>
+          <option value="low">Low only</option>
+          <option value="med" selected>Low + Medium</option>
+        </select>
+      </div>
+      <div>
+        <label>Region</label>
+        <select id="regionFilter">
+          <option value="All" selected>All</option>
+          <option value="Auckland base">Auckland base</option>
+          <option value="Hauraki Gulf islands">Hauraki Gulf islands</option>
+          <option value="Bay of Islands">Bay of Islands</option>
+          <option value="North Island trip">North Island trip</option>
+          <option value="Coromandel (trip)">Coromandel</option>
+          <option value="Central Plateau (Taupo)">Taupō</option>
+          <option value="Sports & venues">Sports & venues</option>
+          <option value="Free / low-cost">Free / low-cost</option>
+          <option value="South Island (flight)">South Island (flight)</option>
+        </select>
+      </div>
+    </div>
+
+    <label style="margin-top:10px;">Highly-rated only</label>
+    <select id="ratingFilter">
+      <option value="off" selected>Off</option>
+      <option value="46">≥ 4.6</option>
+      <option value="48">≥ 4.8</option>
+    </select>
+
+    <details style="margin-top:12px;">
+      <summary>Advanced scheduling</summary>
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label>Day start time</label>
+          <input id="dayStart" type="time" value="10:00"/>
+        </div>
+        <div>
+          <label>Slot duration (mins)</label>
+          <input id="slotMins" type="number" min="30" step="15" value="120"/>
+        </div>
+        <div>
+          <label>Break (mins)</label>
+          <input id="breakMins" type="number" min="0" step="5" value="45"/>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:8px;">Reflow uses: start + index × (slot + break).</div>
+    </details>
+
+    <details style="margin-top:12px;">
+      <summary>Import / Export</summary>
+      <div style="margin-top:10px;">
+        <button id="exportJson" class="btn" style="width:100%;">Export plan (JSON)</button>
+        <button id="importJson" class="btn" style="width:100%; margin-top:10px;">Import plan (JSON)</button>
+        <button id="reset" class="btn btnDanger" style="width:100%; margin-top:10px;">Reset plan</button>
+        <div id="io" style="display:none; margin-top:10px;">
+          <label>Plan JSON</label>
+          <textarea id="ioText"></textarea>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button id="ioClose" class="btn" style="flex:1;">Close</button>
+            <button id="ioApply" class="btn btnPrimary" style="flex:1;">Apply</button>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details style="margin-top:12px;">
+      <summary>Quick links</summary>
+      <div class="hint" style="margin-top:10px; line-height:1.5;">
+        <div><a href="https://at.govt.nz/bus-train-ferry/journey-planner" target="_blank" rel="noreferrer">AT Journey Planner</a></div>
+        <div><a href="https://www.intercity.co.nz/" target="_blank" rel="noreferrer">InterCity (coach)</a></div>
+        <div><a href="https://www.fullers.co.nz/timetables-and-fares/" target="_blank" rel="noreferrer">Fullers360 ferries</a></div>
+        <div><a href="https://edenpark.co.nz/events/" target="_blank" rel="noreferrer">Eden Park events</a></div>
+      </div>
+    </details>
+  </div>
+</aside>
+
+<main class="wrap">
+  <div class="toolbar">
+    <div class="toolbarRow">
+      <button id="addSuggested" class="btn btnPrimary">Add activity</button>
+      <button id="addBuffer" class="btn">Add rest</button>
+      <button id="reflowAll" class="btn">Reflow</button>
+    </div>
+    <div id="summary" class="hint" style="margin-top:8px;"></div>
+  </div>
+
+  <div class="sectionTitle">Itinerary</div>
+  <div id="itinerary"></div>
+
+  <div class="sectionTitle" style="margin-top:18px;">Activities</div>
+  <div class="hint">Tap an activity to add it to today (or tomorrow). Use Filters to narrow the list.</div>
+  <div id="suggestions"></div>
+</main>
+
+<script>
+(function(){
+  const LINKS = {
+    atPlanner: { label: "AT Planner", url: "https://at.govt.nz/bus-train-ferry/journey-planner" },
+    intercity: { label: "InterCity", url: "https://www.intercity.co.nz/" },
+    fullers: { label: "Fullers ferries", url: "https://www.fullers.co.nz/timetables-and-fares/" },
+    boiFerry: { label: "BOI ferries (Paihia ⇄ Russell)", url: "https://northlandferries.co.nz/bay-of-islands-ferry/" },
+    edenEvents: { label: "Eden Park events", url: "https://edenpark.co.nz/events/" },
+    edenTour: { label: "Eden Park tour", url: "https://edenpark.co.nz/experiences/stadium-tour/" },
+    auckAFCMatches: { label: "Auckland FC matches", url: "https://aucklandfc.co.nz/matches/" },
+    airnz: { label: "Air NZ", url: "https://www.airnewzealand.co.nz/" },
+    hobbiton: { label: "Hobbiton", url: "https://www.hobbitontours.com/" }
+  };
+
+  const ACTIVITIES = [
+    { id:"free-mt-eden", title:"Mount Eden / Maungawhau viewpoint", region:"Free / low-cost", walk:"low", cost:0, free:true,
+      overview:"Drive or bus close to the summit area, then a short walk for panoramic city views. Great at sunrise/sunset.",
+      tags:["Views","Short"], transport:[LINKS.atPlanner], notes:"Keep walking minimal; check current summit/road access." },
+
+    { id:"free-mission-bay", title:"Mission Bay beach + cafés", region:"Free / low-cost", walk:"low", cost:0, free:true,
+      overview:"Flat waterfront promenade, plenty of benches, cafés and an easy swim/people-watch day.",
+      tags:["Beach","Easy"], transport:[LINKS.atPlanner], notes:"Go early/late to avoid heat." },
+
+    { id:"buffer", title:"Rest / buffer day", region:"Free / low-cost", walk:"low", cost:0, free:true,
+      overview:"A deliberately light day: sleep in, a café, and only a short flat outing if desired.",
+      tags:["Recovery"], transport:[LINKS.atPlanner], notes:"Keep this day intentionally light." },
+
+    { id:"auck-waterfront", title:"Auckland waterfront (Viaduct/Wynyard)", region:"Auckland base", walk:"low", cost:25,
+      overview:"Short, flat strolls between cafés and marina views. Easy to stop often and keep it gentle in the heat.",
+      tags:["Easy","Flat"], transport:[LINKS.atPlanner], notes:"Shade + seating + short distances." },
+
+    { id:"auck-museum", title:"Auckland Museum (slow pace)", region:"Auckland base", walk:"low", cost:35,
+      overview:"Indoor, air‑conditioned galleries with seating. Choose a few highlights and take breaks.",
+      tags:["Indoor"], transport:[LINKS.atPlanner], notes:"Pick 2–3 areas only, then leave." },
+
+    { id:"auck-eco-safari", title:"Dolphin & Whale Eco-Safari cruise", region:"Auckland base", walk:"low", cost:219,
+      overview:"Seated boat cruise searching for dolphins/whales in the Hauraki Gulf. Minimal walking, big payoff.",
+      tags:["Boat","Wildlife"], transport:[LINKS.atPlanner],
+      rating:4.6, ratingCount:1422,
+      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11454305-Auckland_Dolphin_and_Whale_Watching_Eco_Safari_Cruise-Auckland_Central_North_Islan.html",
+      notes:"Sea conditions vary; bring layers." },
+
+    { id:"fish-auck-megabites", title:"Auckland fishing charter (Megabites)", region:"Auckland base", walk:"low", cost:230,
+      overview:"Half-day style fishing on a charter boat (snapper etc.). Mostly seated/standing on deck.",
+      tags:["Fishing","Boat"], transport:[LINKS.atPlanner],
+      ratingUrl:"https://www.tripadvisor.co.nz/Attraction_Review-g255106-d3494058-Reviews-Megabites_Fishing_Charter_Ltd-Auckland_Central_North_Island.html",
+      notes:"Confirm boarding accessibility and toilet facilities." },
+
+    { id:"hg-devonport", title:"Devonport ferry + lunch", region:"Hauraki Gulf islands", walk:"low", cost:35,
+      overview:"Short ferry ride, cute village cafés, flat waterfront — ideal low-walking outing.",
+      tags:["Ferry","Easy"], transport:[LINKS.fullers, LINKS.atPlanner], notes:"2–3 hours max is ideal." },
+
+    { id:"hg-waiheke-premium", title:"Waiheke wine tour (transport included)", region:"Hauraki Gulf islands", walk:"low", cost:220,
+      overview:"Ferry over then a guided tour with transport between vineyards — minimal walking and great scenery.",
+      tags:["Wine","Scenic"], transport:[LINKS.fullers],
+      rating:4.8, ratingCount:446,
+      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g285729-d11466288-Waiheke_Island_Premium_Wine_Tour_with_Tastings-Waiheke_Island_North_Island.html",
+      notes:"Choose a tour with transport included to minimise walking." },
+
+    { id:"hg-tiritiri", title:"Tiritiri Matangi day trip", region:"Hauraki Gulf islands", walk:"med", cost:160,
+      overview:"Wildlife sanctuary island. Choose the shortest loop and stop frequently; amazing birdlife.",
+      tags:["Wildlife"], transport:[LINKS.fullers],
+      rating:4.8, ratingCount:34,
+      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11453566-Tiritiri_Matangi_Island_Day_Trip_from_Auckland_with_Optional_Guided_Walk-Auckland_.html",
+      notes:"Keep walking light and planned." },
+
+    { id:"boi-russell", title:"Paihia ⇄ Russell ferry + café", region:"Bay of Islands", walk:"low", cost:25,
+      overview:"Quick ferry across the harbour. Russell is compact with easy café stops and waterfront views.",
+      tags:["Ferry"], transport:[LINKS.boiFerry], notes:"Great low-walking outing." },
+
+    { id:"boi-hole-in-rock", title:"Hole in the Rock cruise (Bay of Islands)", region:"Bay of Islands", walk:"low", cost:190,
+      overview:"Scenic cruise through islands (often dolphins). Mostly seated; optional short island stop.",
+      tags:["Boat","Iconic"], transport:[LINKS.intercity],
+      rating:4.6, ratingCount:114,
+      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255110-d24142517-Hole_in_the_Rock_Scenic_Cruise_including_Dolphins_and_Island_stop-Paihia_Bay_of_Is.html",
+      notes:"Confirm boarding accessibility." },
+
+    { id:"boi-cape-reinga-90mile", title:"Cape Reinga + 90 Mile Beach day tour", region:"Bay of Islands", walk:"low", cost:210,
+      overview:"Big day out (mostly seated) to Cape Reinga and 90 Mile Beach. Great in January; opt out of sandboarding if needed.",
+      tags:["Full-day"], transport:[LINKS.intercity],
+      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255110-d21035384-Cape_Reinga_90_Mile_Beach_Tour_With_Lunch-Paihia_Bay_of_Islands_Northland_Region_N.html",
+      notes:"Long day but mostly seated; keep walking minimal." },
+
+    { id:"fish-boi-list", title:"Bay of Islands fishing charters (pick one)", region:"Bay of Islands", walk:"low", cost:260,
+      overview:"Choose a private or shared charter (half-day/full-day). Great summer fishing with minimal walking.",
+      tags:["Fishing"], transport:[LINKS.intercity],
+      ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255110-Activities-c61-t217-Paihia_Bay_of_Islands_Northland_Region_North_Island.html",
+      notes:"Pick accessibility + duration + private/shared." },
+
+    { id:"ni-hobbiton-auck", title:"Hobbiton tour (from Auckland)", region:"North Island trip", walk:"med", cost:370,
+      overview:"Guided walk through the movie set. Some standing and gentle hills; paced groups with photo stops.",
+      tags:["Must-do"], transport:[LINKS.intercity, LINKS.hobbiton],
+      rating:4.9, ratingCount:835,
+      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d13188062-Hobbiton_Movie_Set_Small_Group_Tour_from_Auckland-Auckland_Central_North_Island.html",
+      notes:"Choose coach option + breaks." },
+
+    { id:"rotorua-trout-list", title:"Rotorua trout fishing (choose boat-based)", region:"North Island trip", walk:"low", cost:450,
+      overview:"Pick a guide/charter — boat-based lake trout fishing is the most knee-friendly option.",
+      tags:["Trout","Fishing"], transport:[LINKS.intercity],
+      ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255111-Activities-c61-t217-Rotorua_Rotorua_District_Bay_of_Plenty_Region_North_Island.html",
+      notes:"Confirm boarding & seating." },
+
+    { id:"taupo-trout-list", title:"Taupō trout fishing (choose boat-based)", region:"Central Plateau (Taupo)", walk:"low", cost:450,
+      overview:"Boat charters on Lake Taupō for trout. Minimal walking, typically all gear provided.",
+      tags:["Trout","Fishing"], transport:[LINKS.intercity],
+      ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255113-Activities-c61-t217-Taupo_Taupo_District_Waikato_Region_North_Island.html",
+      notes:"Confirm boarding accessibility." },
+
+    { id:"cor-cathedralcove-cruise", title:"Cathedral Cove boat cruise (Coromandel)", region:"Coromandel (trip)", walk:"low", cost:155,
+      overview:"Boat cruise along the coastline — the best way to ‘see’ Cathedral Cove without the steep track.",
+      tags:["Boat","Iconic"], transport:[LINKS.intercity],
+      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g488373-d20482673-2_Hour_Cathedral_Cove_and_Volcanic_Coast_Cruise_with_Shade_Canopy-Whitianga_Coroma.html",
+      notes:"Boat option avoids the hike." },
+
+    { id:"sports-eden-tour", title:"Eden Park stadium tour", region:"Sports & venues", walk:"low", cost:35,
+      overview:"Behind-the-scenes tour of NZ’s most famous stadium. Gentle pace; confirm any stairs on the route.",
+      tags:["Venue"], transport:[LINKS.atPlanner, LINKS.edenTour], notes:"Check tour times on Eden Park site." },
+
+    { id:"sports-eden-events", title:"Eden Park match/event (cricket/football)", region:"Sports & venues", walk:"low", cost:30,
+      overview:"Pick a match date and enjoy the atmosphere. Choose seats near entrances to minimise stairs.",
+      tags:["Sport"], transport:[LINKS.atPlanner, LINKS.edenEvents], notes:"Use events calendar for January listings." },
+
+    { id:"sports-auckland-fc", title:"Auckland FC match (fixtures)", region:"Sports & venues", walk:"low", cost:30,
+      overview:"Local pro football match day. Great evening activity with minimal walking if you plan seating/transport.",
+      tags:["Football"], transport:[LINKS.atPlanner, LINKS.auckAFCMatches], notes:"Check match dates/times + venue." },
+
+    { id:"si-queenstown", title:"Queenstown (seated scenic options)", region:"South Island (flight)", walk:"low", cost:220,
+      overview:"Gondola, lake cruises, and short flat waterfront walks — choose seated experiences over hikes.",
+      tags:["Scenic"], transport:[LINKS.airnz], notes:"Keep walks short/flat." }
+  ];
+
+  const LS_KEY = "nzTripPlanner_ios_v1";
+  let storageOk = true;
+  function lsGet(){ try{ return localStorage.getItem(LS_KEY);}catch(e){ storageOk=false; return null; } }
+  function lsSet(v){ try{ localStorage.setItem(LS_KEY, v);}catch(e){ storageOk=false; } }
+  function lsRemove(){ try{ localStorage.removeItem(LS_KEY);}catch(e){ storageOk=false; } }
+
+  function todayISO(){
+    const d = new Date();
+    const tz = d.getTimezoneOffset()*60000;
+    return new Date(Date.now()-tz).toISOString().slice(0,10);
+  }
+  function uid(){ return (crypto?.randomUUID?.() || ("id_"+Math.random().toString(16).slice(2))); }
+
+  function mkItem(activityId, date, time){
+    const a = ACTIVITIES.find(x=>x.id===activityId) || ACTIVITIES[0];
+    return {
+      id: uid(),
+      date, time,
+      activityId: a.id,
+      region: a.region,
+      walk: a.walk,
+      cost: a.cost,
+      free: !!a.free,
+      overview: a.overview || "",
+      transportLabel: a.transport?.[0]?.label || LINKS.atPlanner.label,
+      transportUrl: a.transport?.[0]?.url || LINKS.atPlanner.url,
+      rating: a.rating ?? null,
+      ratingCount: a.ratingCount ?? null,
+      ratingUrl: a.ratingUrl ?? "",
+      notes: a.notes || ""
+    };
+  }
+
+  function defaultState(){
+    const start = todayISO();
+    return {
+      budgets: { day: 180 },
+      walkFilter: "med",
+      regionFilter: "All",
+      ratingFilter: "off",
+      timeRules: { dayStart:"10:00", slotMins:120, breakMins:45 },
+      items: [
+        mkItem("free-mt-eden", start, "10:00"),
+        mkItem("auck-waterfront", start, "12:45"),
+        mkItem("buffer", start, "15:30")
+      ]
+    };
+  }
+
+  let state = (function(){
+    const raw = lsGet();
+    if (!raw) return defaultState();
+    try { return JSON.parse(raw); } catch { return defaultState(); }
+  })();
+
+  function save(){ lsSet(JSON.stringify(state)); }
+
+  const $ = (id)=>document.getElementById(id);
+  function esc(s){ return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
+  function money(n){ const v=Number(n); if (Number.isNaN(v)) return ""; return "NZ$"+v.toFixed(0); }
+  function walkPill(w){
+    if (w==="low") return '<span class="pill pillLow">Low walk</span>';
+    if (w==="med") return '<span class="pill pillMed">Med walk</span>';
+    return '<span class="pill">Any</span>';
+  }
+  function freePill(a){ return (a?.free || Number(a?.cost)===0) ? '<span class="pill pillFree">Free</span>' : ""; }
+  function overBudget(cost){
+    const b = Number(state.budgets?.day || 0);
+    if (b<=0) return false;
+    return Number(cost||0) > b;
+  }
+  function withinWalk(w){
+    const f = state.walkFilter;
+    if (f==="any") return true;
+    if (f==="low") return w==="low";
+    return (w==="low" || w==="med");
+  }
+  function withinRegion(r){
+    if (state.regionFilter==="All") return true;
+    return r===state.regionFilter;
+  }
+  function withinRating(a){
+    const rf=state.ratingFilter;
+    if (rf==="off") return true;
+    const thr = (rf==="46")?4.6:4.8;
+    if (a.rating==null) return false;
+    return Number(a.rating) >= thr;
+  }
+  function parseMins(t){ const [h,m]=(t||"00:00").split(":").map(Number); return h*60+m; }
+  function minsToTime(mins){
+    const m=((mins%(24*60))+(24*60))%(24*60);
+    const hh=String(Math.floor(m/60)).padStart(2,"0");
+    const mm=String(Math.floor(m%60)).padStart(2,"0");
+    return hh+":"+mm;
+  }
+  function reflowDate(date){
+    const start=parseMins(state.timeRules.dayStart||"10:00");
+    const slot=Number(state.timeRules.slotMins||120);
+    const brk=Number(state.timeRules.breakMins||45);
+    const idxs=[];
+    state.items.forEach((it,i)=>{ if(it.date===date) idxs.push(i); });
+    idxs.forEach((arrIdx,pos)=>{ state.items[arrIdx].time = minsToTime(start + pos*(slot+brk)); });
+  }
+  function reflowAll(){
+    [...new Set(state.items.map(x=>x.date))].sort().forEach(reflowDate);
+  }
+  function moveToDateGroupEnd(itemId, newDate){
+    const idx=state.items.findIndex(x=>x.id===itemId);
+    if(idx<0) return;
+    const it=state.items[idx];
+    state.items.splice(idx,1);
+    let insertAt=state.items.length;
+    for(let i=0;i<state.items.length;i++){
+      if(state.items[i].date===newDate) insertAt=i+1;
+    }
+    state.items.splice(insertAt,0,it);
+  }
+  function applyActivity(item, activityId){
+    const a = ACTIVITIES.find(x=>x.id===activityId);
+    if(!a) return;
+    item.activityId=a.id;
+    item.region=a.region;
+    item.walk=a.walk;
+    item.cost=a.cost;
+    item.free=!!a.free;
+    item.overview=a.overview||"";
+    item.transportLabel=a.transport?.[0]?.label || LINKS.atPlanner.label;
+    item.transportUrl=a.transport?.[0]?.url || LINKS.atPlanner.url;
+    item.rating=a.rating ?? null;
+    item.ratingCount=a.ratingCount ?? null;
+    item.ratingUrl=a.ratingUrl ?? "";
+    if(!item.notes || !item.notes.trim()) item.notes=a.notes||"";
+  }
+
+  // Drawer
+  const openBtn = $("openDrawer");
+  const closeBtn = $("closeDrawer");
+  const backdrop = $("drawerBackdrop");
+  function openDrawer(){ document.body.classList.add("drawerOpen"); }
+  function closeDrawer(){ document.body.classList.remove("drawerOpen"); }
+  openBtn.addEventListener("click", openDrawer);
+  closeBtn.addEventListener("click", closeDrawer);
+  backdrop.addEventListener("click", closeDrawer);
+
+  function render(){
+    $("budDay").value = state.budgets.day ?? 180;
+    $("walkFilter").value = state.walkFilter;
+    $("regionFilter").value = state.regionFilter;
+    $("ratingFilter").value = state.ratingFilter;
+    $("dayStart").value = state.timeRules.dayStart;
+    $("slotMins").value = state.timeRules.slotMins;
+    $("breakMins").value = state.timeRules.breakMins;
+
+    const total = state.items.reduce((a,it)=>a+(Number(it.cost)||0),0);
+    $("summary").textContent = "Planned: "+state.items.length+" • Est. spend: "+money(total)+" • Budget/day: "+money(state.budgets.day)+(storageOk?"":" • (storage blocked, use export)");
+
+    const wrap = $("itinerary");
+    const dates=[...new Set(state.items.map(x=>x.date))].sort();
+    let out="";
+    for(const date of dates){
+      out += '<div class="dayHeader">'+esc(date)+'</div>';
+      const items = state.items.filter(it=>it.date===date);
+      for(const it of items){
+        const a = ACTIVITIES.find(x=>x.id===it.activityId) || {};
+        const over = overBudget(it.cost);
+        const rating = (it.rating!=null) ? ("★ "+Number(it.rating).toFixed(1)+(it.ratingCount?(" ("+it.ratingCount+")"):"")) : "";
+        out += `
+          <div class="card" data-id="${it.id}">
+            <div class="itTop">
+              <div style="flex:1; min-width:0;">
+                <div class="itTitle">${esc(a.title || it.activityId)}</div>
+                <div class="itDesc">${esc(a.overview || it.overview || "")}</div>
+                <div class="pills">
+                  ${walkPill(it.walk)}
+                  <span class="pill">${esc(it.region || "")}</span>
+                  ${freePill(a)}
+                  ${over ? '<span class="pill pillWarn">Over budget</span>' : ''}
+                  ${rating ? '<span class="pill">'+esc(rating)+'</span>' : ''}
+                </div>
+              </div>
+              <button class="btn btnDanger" data-action="del" data-id="${it.id}" style="min-width:88px;">Delete</button>
+            </div>
+
+            <div class="grid2" style="margin-top:10px;">
+              <div>
+                <label>Date</label>
+                <input type="date" value="${esc(it.date)}" data-k="date" data-id="${it.id}">
+              </div>
+              <div>
+                <label>Time</label>
+                <input type="time" value="${esc(it.time)}" data-k="time" data-id="${it.id}">
+              </div>
+            </div>
+
+            <label style="margin-top:10px;">Activity</label>
+            <select data-k="activityId" data-id="${it.id}">
+              ${ACTIVITIES.map(x=>{
+                const r = x.rating!=null ? (" — ★"+x.rating.toFixed(1)) : "";
+                const f = (x.free || x.cost===0) ? " — Free" : "";
+                return '<option value="'+x.id+'">'+esc(x.title + r + f)+'</option>';
+              }).join("")}
+            </select>
+
+            <div class="grid2" style="margin-top:10px;">
+              <div>
+                <label>Cost (NZD)</label>
+                <input type="number" min="0" step="5" value="${esc(it.cost)}" data-k="cost" data-id="${it.id}">
+              </div>
+              <div>
+                <label>Notes</label>
+                <input value="${esc(it.notes||"")}" data-k="notes" data-id="${it.id}">
+              </div>
+            </div>
+
+            <div class="itLinks">
+              <a class="linkBtn" href="${esc(it.transportUrl)}" target="_blank" rel="noreferrer">${esc(it.transportLabel || "Transport")}</a>
+              ${it.ratingUrl ? '<a class="linkBtn" href="'+esc(it.ratingUrl)+'" target="_blank" rel="noreferrer">Reviews</a>' : ''}
+            </div>
+          </div>
+        `;
+      }
+    }
+    wrap.innerHTML = out;
+
+    wrap.querySelectorAll('select[data-k="activityId"]').forEach(sel=>{
+      const id = sel.dataset.id;
+      const it = state.items.find(x=>x.id===id);
+      if (it) sel.value = it.activityId;
+    });
+
+    const sug = $("suggestions");
+    const list = ACTIVITIES
+      .filter(a=>withinWalk(a.walk))
+      .filter(a=>withinRegion(a.region))
+      .filter(a=>withinRating(a));
+
+    sug.innerHTML = list.map(a=>{
+      const over = overBudget(a.cost);
+      const rating = (a.rating!=null) ? ("★ "+a.rating.toFixed(1)+(a.ratingCount?(" ("+a.ratingCount+")"):"")) : "★ n/a";
+      return `
+        <div class="card">
+          <div class="suggTitle">${esc(a.title)}</div>
+          <div class="suggDesc">${esc(a.overview || "")}</div>
+          <div class="pills">
+            ${walkPill(a.walk)}
+            <span class="pill">${esc(a.region)}</span>
+            ${freePill(a)}
+            <span class="pill">${money(a.cost)} est.</span>
+            <span class="pill">${esc(rating)}</span>
+            ${over ? '<span class="pill pillWarn">Over budget</span>' : ''}
+          </div>
+          <div class="suggFooter">
+            <div class="hint">${a.notes ? esc(a.notes) : ""}</div>
+            <div style="display:flex; gap:10px;">
+              <button class="btn btnPrimary" data-action="addAct" data-act="${a.id}">Add</button>
+              <button class="btn" data-action="addActTomorrow" data-act="${a.id}">Tomorrow</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("") || '<div class="card"><div class="hint">No activities match your filters. Try widening Region or walking tolerance.</div></div>';
+
+    save();
+  }
+
+  function addActivity(activityId, when){
+    const base = todayISO();
+    const d = new Date(base+"T00:00:00");
+    if (when==="tomorrow") d.setDate(d.getDate()+1);
+    const tz = d.getTimezoneOffset()*60000;
+    const date = new Date(d.getTime()-tz).toISOString().slice(0,10);
+
+    const it = mkItem(activityId, date, state.timeRules.dayStart || "10:00");
+    state.items.push(it);
+    moveToDateGroupEnd(it.id, date);
+    reflowDate(date);
+    render();
+  }
+
+  function resetPlan(){
+    lsRemove();
+    storageOk = true;
+    state = defaultState();
+    reflowAll();
+    render();
+  }
+
+  $("budDay").addEventListener("input",(e)=>{ state.budgets.day = Number(e.target.value||0); render(); });
+  $("walkFilter").addEventListener("change",(e)=>{ state.walkFilter = e.target.value; render(); closeDrawer(); });
+  $("regionFilter").addEventListener("change",(e)=>{ state.regionFilter = e.target.value; render(); closeDrawer(); });
+  $("ratingFilter").addEventListener("change",(e)=>{ state.ratingFilter = e.target.value; render(); closeDrawer(); });
+
+  $("dayStart").addEventListener("input",(e)=>{ state.timeRules.dayStart = e.target.value || "10:00"; reflowAll(); render(); });
+  $("slotMins").addEventListener("input",(e)=>{ state.timeRules.slotMins = Number(e.target.value||120); reflowAll(); render(); });
+  $("breakMins").addEventListener("input",(e)=>{ state.timeRules.breakMins = Number(e.target.value||45); reflowAll(); render(); });
+
+  $("addSuggested").addEventListener("click", ()=>{
+    const first = ACTIVITIES.find(a=>withinWalk(a.walk) && withinRegion(a.region) && withinRating(a)) || ACTIVITIES[0];
+    addActivity(first.id, "today");
+  });
+  $("addBuffer").addEventListener("click", ()=>addActivity("buffer","today"));
+  $("reflowAll").addEventListener("click", ()=>{ reflowAll(); render(); });
+
+  $("exportJson").addEventListener("click", ()=>{
+    $("io").style.display = "block";
+    $("ioText").value = JSON.stringify(state, null, 2);
+    $("ioApply").style.display = "none";
+  });
+  $("importJson").addEventListener("click", ()=>{
+    $("io").style.display = "block";
+    $("ioText").value = "";
+    $("ioApply").style.display = "inline-block";
+  });
+  $("ioClose").addEventListener("click", ()=>{ $("io").style.display="none"; $("ioText").value=""; });
+  $("ioApply").addEventListener("click", ()=>{
+    try{
+      const obj = JSON.parse($("ioText").value);
+      if (!obj || typeof obj !== "object") throw new Error("Invalid JSON.");
+      obj.items = Array.isArray(obj.items) ? obj.items : [];
+      obj.budgets = obj.budgets || { day:180 };
+      obj.walkFilter = obj.walkFilter || "med";
+      obj.regionFilter = obj.regionFilter || "All";
+      obj.ratingFilter = obj.ratingFilter || "off";
+      obj.timeRules = obj.timeRules || { dayStart:"10:00", slotMins:120, breakMins:45 };
+
+      obj.items.forEach(it=>{
+        if (!it.activityId || !ACTIVITIES.find(a=>a.id===it.activityId)) it.activityId = "buffer";
+        applyActivity(it, it.activityId);
+        if (!it.id) it.id = uid();
+        if (!it.date) it.date = todayISO();
+        if (!it.time) it.time = obj.timeRules.dayStart || "10:00";
+      });
+
+      state = obj;
+      $("io").style.display="none";
+      $("ioText").value="";
+      reflowAll();
+      render();
+      closeDrawer();
+    }catch(err){
+      alert("Import failed: " + err.message);
+    }
+  });
+
+  $("reset").addEventListener("click", resetPlan);
+
+  document.body.addEventListener("click",(e)=>{
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    if (action==="del"){
+      const id = btn.dataset.id;
+      const it = state.items.find(x=>x.id===id);
+      const d = it?.date;
+      state.items = state.items.filter(x=>x.id!==id);
+      if (d) reflowDate(d);
+      render();
+      return;
+    }
+    if (action==="addAct"){ addActivity(btn.dataset.act, "today"); return; }
+    if (action==="addActTomorrow"){ addActivity(btn.dataset.act, "tomorrow"); return; }
+  });
+
+  document.body.addEventListener("input",(e)=>{
+    const t = e.target;
+    const id = t.dataset.id;
+    const k = t.dataset.k;
+    if (!id || !k) return;
+
+    const it = state.items.find(x=>x.id===id);
+    if (!it) return;
+
+    if (k==="activityId"){
+      applyActivity(it, t.value);
+      reflowDate(it.date);
+      render();
+      return;
+    }
+    if (k==="cost"){ it.cost = Number(t.value||0); render(); return; }
+    if (k==="notes"){ it.notes = t.value; save(); return; }
+    if (k==="time"){ it.time = t.value; save(); return; }
+
+    if (k==="date"){
+      const old = it.date;
+      const neu = t.value;
+      if (!neu) return;
+      it.date = neu;
+      moveToDateGroupEnd(it.id, neu);
+      reflowDate(old);
+      reflowDate(neu);
+      render();
+      return;
+    }
+  });
+
+  reflowAll();
+  render();
+})();
+</script>
+</body>
+</html>
