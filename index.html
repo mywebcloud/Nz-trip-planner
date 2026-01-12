@@ -33,7 +33,7 @@
       color:#fff;
       padding: calc(12px + env(safe-area-inset-top)) 14px 12px;
     }
-    header h1{ margin:0; font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+    header h1{ margin:0; font-size:18px; font-weight:750; letter-spacing:-0.01em; }
     header p{ margin:6px 0 0; font-size:13px; opacity:.9; line-height:1.3; }
 
     .wrap{ max-width: 1100px; margin:0 auto; padding: 12px 12px calc(24px + env(safe-area-inset-bottom)); }
@@ -49,6 +49,7 @@
       gap:10px;
       align-items:center;
       justify-content:space-between;
+      flex-wrap: wrap;
     }
     .btn{
       min-height:44px;
@@ -58,8 +59,9 @@
       background: var(--card);
       color: var(--text);
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 650;
       box-shadow: 0 1px 0 rgba(0,0,0,.02);
+      flex: 1;
     }
     .btnPrimary{
       background: var(--accent);
@@ -80,10 +82,11 @@
       padding: 8px 10px;
       min-height: 36px;
       border-radius: 10px;
-      font-weight: 800;
+      font-weight: 850;
       font-size: 14px;
+      flex: 0 0 auto;
     }
-    .hint{ font-size: 12px; color: var(--muted); line-height: 1.3; }
+    .hint{ font-size: 12px; color: var(--muted); line-height: 1.35; }
     .card{
       background: var(--card);
       border: 1px solid var(--border);
@@ -96,7 +99,7 @@
     .sectionTitle{
       margin: 14px 2px 6px;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 850;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: .05em;
@@ -104,7 +107,7 @@
     .dayHeader{
       margin: 14px 2px 6px;
       font-size: 16px;
-      font-weight: 800;
+      font-weight: 850;
       letter-spacing:-0.01em;
     }
 
@@ -136,7 +139,7 @@
     }
     textarea{
       width:100%;
-      min-height: 160px;
+      min-height: 180px;
       padding:10px;
       border-radius:12px;
       border:1px solid var(--border);
@@ -145,8 +148,7 @@
     .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     @media (max-width: 560px){
       .grid2{ grid-template-columns: 1fr; }
-      .toolbarRow{ flex-wrap: wrap; }
-      .btn{ flex: 1; }
+      .btn{ flex: 1 1 45%; }
     }
 
     .itTop{
@@ -155,8 +157,8 @@
       align-items:flex-start;
       justify-content:space-between;
     }
-    .itTitle{ font-weight: 800; font-size: 15px; line-height: 1.2; }
-    .itDesc{ margin-top:6px; font-size: 13px; color: var(--muted); line-height: 1.35; }
+    .itTitle{ font-weight: 850; font-size: 15px; line-height: 1.2; }
+    .itDesc{ margin-top:6px; font-size: 13px; color: var(--muted); line-height: 1.4; }
     .itLinks{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
     .linkBtn{
       min-height: 40px;
@@ -165,8 +167,9 @@
       border: 1px solid var(--border);
       background: #fff;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 750;
       color: var(--accent);
+      cursor:pointer;
     }
 
     /* Drawer */
@@ -218,14 +221,14 @@
     summary{
       list-style:none;
       cursor:pointer;
-      font-weight: 800;
+      font-weight: 850;
       font-size: 14px;
       color: var(--text);
     }
     summary::-webkit-details-marker{ display:none; }
 
-    .suggTitle{ font-weight: 800; font-size: 14px; }
-    .suggDesc{ margin-top:6px; font-size: 13px; color: var(--muted); line-height: 1.35; }
+    .suggTitle{ font-weight: 850; font-size: 14px; }
+    .suggDesc{ margin-top:6px; font-size: 13px; color: var(--muted); line-height: 1.4; }
     .suggFooter{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center; justify-content:space-between; }
   </style>
 </head>
@@ -234,7 +237,7 @@
   <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
     <div>
       <h1>NZ Trip Planner</h1>
-      <p>Mobile-friendly itinerary editor (Auckland base + trips). Tap “Filters” to adjust options.</p>
+      <p>Simple itinerary editor. Tap “Filters” to adjust activity options. Works well on iPhone/iPad.</p>
     </div>
     <button id="openDrawer" class="btnGhost">Filters</button>
   </div>
@@ -250,7 +253,7 @@
   <div class="card" style="box-shadow:none; margin-top:0;">
     <label>Daily budget (NZD)</label>
     <input id="budDay" type="number" min="0" step="10" value="180" />
-    <div class="hint" style="margin-top:6px;">Items over budget are flagged (nothing gets hidden).</div>
+    <div class="hint" style="margin-top:6px;">Over‑budget items are flagged (never hidden).</div>
 
     <div class="grid2" style="margin-top:10px;">
       <div>
@@ -278,7 +281,7 @@
       </div>
     </div>
 
-    <label style="margin-top:10px;">Highly-rated only</label>
+    <label style="margin-top:10px;">Highly‑rated only</label>
     <select id="ratingFilter">
       <option value="off" selected>Off</option>
       <option value="46">≥ 4.6</option>
@@ -323,11 +326,11 @@
 
     <details style="margin-top:12px;">
       <summary>Quick links</summary>
-      <div class="hint" style="margin-top:10px; line-height:1.5;">
-        <div><a href="https://at.govt.nz/bus-train-ferry/journey-planner" target="_blank" rel="noreferrer">AT Journey Planner</a></div>
-        <div><a href="https://www.intercity.co.nz/" target="_blank" rel="noreferrer">InterCity (coach)</a></div>
-        <div><a href="https://www.fullers.co.nz/timetables-and-fares/" target="_blank" rel="noreferrer">Fullers360 ferries</a></div>
-        <div><a href="https://edenpark.co.nz/events/" target="_blank" rel="noreferrer">Eden Park events</a></div>
+      <div class="hint" style="margin-top:10px; line-height:1.6;">
+        <div><a href="https://at.govt.nz/bus-train-ferry/journey-planner" target="_blank" rel="noreferrer noopener">AT Journey Planner</a></div>
+        <div><a href="https://www.intercity.co.nz/" target="_blank" rel="noreferrer noopener">InterCity (coach)</a></div>
+        <div><a href="https://www.fullers.co.nz/timetables-and-fares/" target="_blank" rel="noreferrer noopener">Fullers360 ferries</a></div>
+        <div><a href="https://edenpark.co.nz/events/" target="_blank" rel="noreferrer noopener">Eden Park events</a></div>
       </div>
     </details>
   </div>
@@ -340,11 +343,16 @@
       <button id="addBuffer" class="btn">Add rest</button>
       <button id="reflowAll" class="btn">Reflow</button>
     </div>
+    <div class="toolbarRow" style="margin-top:10px;">
+      <button id="toggleView" class="btn">List view</button>
+      <button id="exportICS" class="btn">Export calendar</button>
+    </div>
     <div id="summary" class="hint" style="margin-top:8px;"></div>
   </div>
 
   <div class="sectionTitle">Itinerary</div>
   <div id="itinerary"></div>
+  <div id="itineraryList" style="display:none;"></div>
 
   <div class="sectionTitle" style="margin-top:18px;">Activities</div>
   <div class="hint">Tap an activity to add it to today (or tomorrow). Use Filters to narrow the list.</div>
@@ -353,6 +361,7 @@
 
 <script>
 (function(){
+  // --- Links ---
   const LINKS = {
     atPlanner: { label: "AT Planner", url: "https://at.govt.nz/bus-train-ferry/journey-planner" },
     intercity: { label: "InterCity", url: "https://www.intercity.co.nz/" },
@@ -365,124 +374,137 @@
     hobbiton: { label: "Hobbiton", url: "https://www.hobbitontours.com/" }
   };
 
+  // --- Activities (each has an overview "what to expect") ---
   const ACTIVITIES = [
-    { id:"free-mt-eden", title:"Mount Eden / Maungawhau viewpoint", region:"Free / low-cost", walk:"low", cost:0, free:true,
-      overview:"Drive or bus close to the summit area, then a short walk for panoramic city views. Great at sunrise/sunset.",
-      tags:["Views","Short"], transport:[LINKS.atPlanner], notes:"Keep walking minimal; check current summit/road access." },
+  { id:"free-mt-eden", title:"Mount Eden / Maungawhau viewpoint", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:90, overview:"Auckland\u2019s classic lookout with big views for minimal effort. Expect a short walk to viewpoints, plenty of benches and easy photo stops. What to bring: water, hat, sunscreen, light jacket if windy. Mobility note: keep to the closest viewpoints and take frequent seated breaks.", tags:["Views", "Short"], transport:[LINKS.atPlanner], notes:"Go early/late in January to avoid heat." },
+  { id:"free-cornwall-park", title:"Cornwall Park + One Tree Hill (short stroll)", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:90, overview:"Gentle parkland with shade, benches and easy paths. Expect a relaxed loop from parking plus a long sit/picnic. What to bring: water, hat, sunscreen, picnic snack. Mobility note: stay on the flattest paths and don\u2019t push up steep slopes.", tags:["Park", "Easy"], transport:[LINKS.atPlanner], notes:"Great reset day." },
+  { id:"free-mission-bay", title:"Mission Bay beach + caf\u00e9s", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:120, overview:"Flat waterfront promenade with caf\u00e9s, benches and shade. Expect a \u2018sit\u2011stroll\u2011sit\u2019 rhythm and optional swim. What to bring: water, sunscreen, hat, towel. Mobility note: keep strolls short and take long caf\u00e9 breaks.", tags:["Beach", "Easy"], transport:[LINKS.atPlanner], notes:"Avoid midday heat." },
+  { id:"free-albert-park", title:"Albert Park + CBD caf\u00e9s (short loop)", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:60, overview:"Central city gardens with benches and shade. Expect a short loop, then a caf\u00e9 nearby. What to bring: water, hat, light jacket (air\u2011con indoors). Mobility note: choose the flattest paths and sit often.", tags:["Gardens", "Easy"], transport:[LINKS.atPlanner], notes:"Pair with Art Gallery highlights." },
+  { id:"free-tamaki-drive", title:"T\u0101maki Drive scenic drive + short stops", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:90, overview:"A classic coastal drive with multiple viewpoints and flat stop options. Expect short hop\u2011outs for photos and plenty of seating at beaches. What to bring: water, sunscreen, hat. Mobility note: keep stops short and choose flat areas.", tags:["Scenic", "Drive"], transport:[LINKS.atPlanner], notes:"Best with weekend vehicle." },
+  { id:"free-devonport-beach", title:"Devonport beaches & caf\u00e9s (flat waterfront)", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:120, overview:"Flat waterfront with caf\u00e9s and benches. Expect gentle wandering, sea views and easy rest breaks. What to bring: water, hat, sunscreen. Mobility note: stay on flat waterfront paths.", tags:["Beach", "Easy"], transport:[LINKS.fullers], notes:"Perfect half\u2011day." },
+  { id:"free-bastion-point", title:"Michael Joseph Savage Memorial (Bastion Point) lookout", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:60, overview:"Iconic waterfront memorial with panoramic views. Expect short paths and benches; great for photos. What to bring: water, sunscreen, hat. Mobility note: keep to the closest viewing areas.", tags:["Views", "Short"], transport:[LINKS.atPlanner], notes:"Sunset is excellent." },
+  { id:"free-wynyard", title:"Wynyard Quarter (flat waterfront dining)", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:90, overview:"Flat waterfront precinct with lots of seating and food options. Expect a relaxed stroll and long sit\u2011downs. What to bring: water and a light layer for evening breeze. Mobility note: keep it slow and use benches often.", tags:["Food", "Easy"], transport:[LINKS.atPlanner], notes:"Great evening option." },
+  { id:"free-botanic", title:"Auckland Botanic Gardens (short loops)", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:90, overview:"Mostly flat garden paths with seating and shade. Expect an easy loop near the visitor centre and a relaxed caf\u00e9 stop. What to bring: water, sunscreen, hat. Mobility note: choose the shortest loop.", tags:["Gardens"], transport:[LINKS.atPlanner], notes:"Great in the morning." },
+  { id:"buffer", title:"Rest / buffer day", region:"Free / low-cost", walk:"low", cost:0, free:true, durationMins:0, overview:"An intentionally light reset day: sleep in, caf\u00e9, and only a short flat outing (or none). What to bring: water and comfy clothes. Mobility note: prioritise rest and keep steps minimal.", tags:["Recovery"], transport:[LINKS.atPlanner], notes:"Use after long coach/ferry days." },
+  { id:"auck-waterfront", title:"Auckland waterfront (Viaduct/Wynyard)", region:"Auckland base", walk:"low", cost:25, durationMins:120, overview:"Flat waterfront wandering with caf\u00e9s every few minutes. Expect easy photo stops, marina views and plenty of seating. What to bring: water, sunscreen, hat. Mobility note: keep it to 1\u20132 hours with breaks.", tags:["Easy", "Flat"], transport:[LINKS.atPlanner], notes:"Great anchor outing." },
+  { id:"auck-skytower", title:"Sky Tower (lift access) + caf\u00e9", region:"Auckland base", walk:"low", cost:55, durationMins:90, overview:"Lift access to panoramic views with minimal walking. Expect 30\u201360 minutes on the viewing deck then a long caf\u00e9 break. What to bring: light jacket (windy) and camera. Mobility note: very knee\u2011friendly.", tags:["Views"], transport:[LINKS.atPlanner], notes:"Book ahead for popular times." },
+  { id:"auck-museum", title:"Auckland Museum (slow pace highlights)", region:"Auckland base", walk:"low", cost:35, durationMins:120, overview:"Indoor, air\u2011conditioned galleries with seating. Expect a gentle highlights visit and a caf\u00e9 break. What to bring: light layer and water. Mobility note: do 2\u20133 sections only.", tags:["Indoor"], transport:[LINKS.atPlanner], notes:"Avoid trying to see everything." },
+  { id:"auck-art-gallery", title:"Auckland Art Gallery (top rooms)", region:"Auckland base", walk:"low", cost:0, free:true, durationMins:90, overview:"Calm indoor visit with seating and nearby caf\u00e9s. Expect a short highlights loop and a relaxed pace. What to bring: light layer. Mobility note: sit between rooms and keep it short.", tags:["Indoor", "Calm"], transport:[LINKS.atPlanner], notes:"Perfect hot-day activity." },
+  { id:"auck-kelly-tarltons", title:"Kelly Tarlton\u2019s Aquarium", region:"Auckland base", walk:"low", cost:50, durationMins:120, overview:"Indoor aquarium with moving walkway tunnel\u2014very easy on knees. Expect 1\u20132 hours of penguins, sharks and marine life. What to bring: light layer. Mobility note: great seated breaks.", tags:["Indoor"], transport:[LINKS.atPlanner], notes:"Good rainy-day option." },
+  { id:"auck-motat", title:"MOTAT (choose one building)", region:"Auckland base", walk:"low", cost:25, durationMins:120, overview:"Transport/history exhibits at your own pace with seating. Expect a relaxed visit; pick one area and keep it simple. What to bring: water. Mobility note: avoid over-scheduling multiple buildings.", tags:["Indoor"], transport:[LINKS.atPlanner], notes:"Keep it to a half-day." },
+  { id:"auck-zoo", title:"Auckland Zoo (short route + caf\u00e9)", region:"Auckland base", walk:"med", cost:55, durationMins:180, overview:"A big site\u2014make it gentle by choosing 2\u20133 zones and a caf\u00e9 stop. Expect lots of sitting and shade breaks. What to bring: hat, sunscreen, water. Mobility note: avoid trying to do the full loop.", tags:["Animals"], transport:[LINKS.atPlanner], notes:"Go early to avoid heat." },
+  { id:"auck-harbour-cruise", title:"Auckland Harbour sightseeing cruise", region:"Auckland base", walk:"low", cost:80, durationMins:90, overview:"Mostly seated harbour cruise with commentary and skyline views. Expect minimal walking and a breezy deck for photos. What to bring: light jacket, sunscreen. Mobility note: very knee\u2011friendly.", tags:["Boat", "Views"], transport:[LINKS.atPlanner], ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11453559-Auckland_Harbour_Cruise-Auckland_Central_North_Island.html", notes:"Choose calm weather." },
+  { id:"auck-americas-cup-sail", title:"America\u2019s Cup sailing experience", region:"Auckland base", walk:"low", cost:210, durationMins:150, overview:"Sailing experience on the Waitemat\u0101 with crew guidance. Expect mostly seated time with optional light participation. What to bring: light jacket, hat, sunscreen. Mobility note: stay seated and use handrails.", tags:["Boat", "Iconic"], transport:[LINKS.atPlanner], ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11449222-America_s_Cup_Sailing_on_Auckland_s_Waitemata_Harbour-Auckland_Central_North_Islan.html", notes:"Book ahead in January." },
+  { id:"auck-eco-safari", title:"Dolphin & Whale Eco-Safari cruise", region:"Auckland base", walk:"low", cost:219, durationMins:270, overview:"Seated eco-cruise into the Hauraki Gulf looking for dolphins/whales. Expect a long but low-walking outing with fresh air. What to bring: light jacket, sunscreen, water, motion-sickness tablets if needed. Mobility note: very suitable.", tags:["Boat", "Wildlife"], transport:[LINKS.atPlanner], rating:4.6, ratingCount:1422, ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11454305-Auckland_Dolphin_and_Whale_Watching_Eco_Safari_Cruise-Auckland_Central_North_Islan.html", notes:"Sea conditions vary." },
+  { id:"fish-auck-megabites", title:"Auckland fishing charter (Megabites)", region:"Auckland base", walk:"low", cost:230, durationMins:240, overview:"Half\u2011day charter fishing (often snapper). Mostly seated/standing on deck with a briefing. What to bring: hat, sunscreen, water, light jacket, motion-sickness tablets if needed. Mobility note: confirm boarding support and toilets.", tags:["Fishing", "Boat"], transport:[LINKS.atPlanner], ratingUrl:"https://www.tripadvisor.co.nz/Attraction_Review-g255106-d3494058-Reviews-Megabites_Fishing_Charter_Ltd-Auckland_Central_North_Island.html", notes:"Ask about handrails." },
+  { id:"auck-matakana-day", title:"Matakana markets + vineyard lunch (day trip)", region:"Auckland base", walk:"low", cost:180, durationMins:360, overview:"Relaxed day trip for markets, caf\u00e9s and a single vineyard lunch. Expect short flat walks and lots of sitting. What to bring: hat, sunscreen, water. Mobility note: keep it to one market + one lunch stop.", tags:["Food", "Day trip"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/Tourism-g1811027-Auckland_North_Island-Vacations.html", notes:"Best on Saturdays for the market." },
+  { id:"auck-piha-lookout", title:"Piha beach lookout (drive-up views)", region:"Auckland base", walk:"low", cost:0, free:true, durationMins:180, overview:"West coast black-sand beach with dramatic scenery. Expect short viewpoint stops and a caf\u00e9 break (avoid long sand walks). What to bring: wind layer, water. Mobility note: keep walking minimal\u2014sand can be hard on knees.", tags:["Scenic", "Drive"], transport:[LINKS.atPlanner], notes:"Check surf and wind; can be breezy." },
+  { id:"auck-muriwai", title:"Muriwai Gannet Colony viewpoint (seasonal)", region:"Auckland base", walk:"low", cost:0, free:true, durationMins:180, overview:"Coastal viewpoints and (seasonal) gannet viewing with short paths and benches. Expect scenic stops and minimal walking. What to bring: wind layer, sunscreen. Mobility note: choose the closest viewing platforms.", tags:["Wildlife", "Scenic"], transport:[LINKS.atPlanner], notes:"Check access conditions before you go." },
+  { id:"hg-devonport", title:"Devonport ferry + lunch", region:"Hauraki Gulf islands", walk:"low", cost:35, durationMins:180, overview:"Quick ferry to a compact village with caf\u00e9s and flat waterfront views. Expect gentle wandering and long seated breaks. What to bring: hat, sunscreen, water. Mobility note: stay near the waterfront.", tags:["Ferry", "Easy"], transport:[LINKS.fullers, LINKS.atPlanner], notes:"Great half-day." },
+  { id:"hg-waiheke-premium", title:"Waiheke wine tour (transport included)", region:"Hauraki Gulf islands", walk:"low", cost:220, durationMins:360, overview:"Ferry to Waiheke then guided tastings with transport between vineyards. Expect lots of sitting and minimal walking. What to bring: hat, sunscreen, water. Mobility note: choose tours with pick-ups.", tags:["Wine", "Scenic"], transport:[LINKS.fullers], rating:4.8, ratingCount:446, ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g285729-d11466288-Waiheke_Island_Premium_Wine_Tour_with_Tastings-Waiheke_Island_North_Island.html", notes:"Book ahead in January." },
+  { id:"hg-waiheke-diy", title:"Waiheke DIY: ferry + one beach/caf\u00e9 stop", region:"Hauraki Gulf islands", walk:"med", cost:80, durationMins:300, overview:"Simple island day: ferry over, short bus/taxi to one beach or village, long lunch, then ferry back. What to bring: hat, sunscreen, water. Mobility note: pick one stop and keep it short.", tags:["Island", "Simple"], transport:[LINKS.fullers], notes:"Avoid over-scheduling." },
+  { id:"hg-tiritiri", title:"Tiritiri Matangi day trip (short loop)", region:"Hauraki Gulf islands", walk:"med", cost:160, durationMins:420, overview:"Wildlife sanctuary with native birds. Expect some uneven paths; choose the shortest loop and stop often. What to bring: water, hat, sunscreen, binoculars. Mobility note: keep walking light.", tags:["Wildlife"], transport:[LINKS.fullers], rating:4.8, ratingCount:34, ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11453566-Tiritiri_Matangi_Island_Day_Trip_from_Auckland_with_Optional_Guided_Walk-Auckland_.html", notes:"Prioritise shade and breaks." },
+  { id:"hg-rotoroa", title:"Rotoroa Island day trip (quiet option)", region:"Hauraki Gulf islands", walk:"med", cost:110, durationMins:420, overview:"Less crowded island with beaches and gentle walking options. Expect a ferry ride and a relaxed day with plenty of sitting. What to bring: water, hat, sunscreen. Mobility note: stay near flat areas.", tags:["Island", "Quiet"], transport:[LINKS.fullers], notes:"Great alternative to busier islands." },
+  { id:"hg-rangitoto", title:"Rangitoto ferry (flat areas only)", region:"Hauraki Gulf islands", walk:"med", cost:60, durationMins:360, overview:"Volcanic island day trip. Skip the summit hike; stay near the wharf and explore flatter lava edges for views. What to bring: water, hat, sunscreen. Mobility note: avoid steep tracks.", tags:["Volcano"], transport:[LINKS.fullers], notes:"Summit is not recommended for knee issues." },
+  { id:"hg-ferry-sunset", title:"Short ferry ride for sunset views", region:"Hauraki Gulf islands", walk:"low", cost:20, durationMins:60, overview:"Use a short ferry ride as the activity\u2014great harbour views with almost no walking. Expect a seated ride and photo moments on deck. What to bring: light jacket, camera. Mobility note: very easy.", tags:["Seated", "Views"], transport:[LINKS.fullers], notes:"Choose off\u2011peak for calmer sailings." },
+  { id:"hg-gulf-cruise", title:"Hauraki Gulf sightseeing cruise", region:"Hauraki Gulf islands", walk:"low", cost:95, durationMins:120, overview:"Seated sightseeing cruise with commentary and island views. Minimal walking and plenty of seating. What to bring: light jacket, sunscreen, water. Mobility note: excellent knee\u2011friendly option.", tags:["Boat", "Scenic"], transport:[LINKS.atPlanner], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255106-Activities-c42-Auckland_Central_North_Island.html", notes:"Weather dependent." },
+  { id:"boi-russell", title:"Paihia \u21c4 Russell ferry + caf\u00e9", region:"Bay of Islands", walk:"low", cost:25, durationMins:180, overview:"Short ferry to Russell for waterfront caf\u00e9s and historic streets. Expect gentle strolling, lots of seating and a relaxed half\u2011day. What to bring: hat, sunscreen, water. Mobility note: stay near the harbour.", tags:["Ferry"], transport:[LINKS.boiFerry], notes:"Half-day is usually plenty." },
+  { id:"boi-waitangi", title:"Waitangi Treaty Grounds (accessible highlights)", region:"Bay of Islands", walk:"med", cost:60, durationMins:180, overview:"NZ\u2019s key historic site. Focus on the most accessible highlights and use benches/caf\u00e9 breaks. What to bring: water, hat, sunscreen. Mobility note: ask staff for the easiest route and take it slowly.", tags:["Culture", "History"], transport:[LINKS.intercity], notes:"Plan 2\u20133 hours at a gentle pace." },
+  { id:"boi-hole-in-rock", title:"Hole in the Rock scenic cruise", region:"Bay of Islands", walk:"low", cost:190, durationMins:240, overview:"Scenic cruise through islands (often dolphins). Mostly seated with optional short island stop\u2014stay near the landing to minimise walking. What to bring: light jacket, sunscreen, water, motion-sickness tablets if needed.", tags:["Boat", "Iconic"], transport:[LINKS.intercity], rating:4.6, ratingCount:114, ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255110-d24142517-Hole_in_the_Rock_Scenic_Cruise_including_Dolphins_and_Island_stop-Paihia_Bay_of_Is.html", notes:"Check sea conditions." },
+  { id:"boi-dolphin-cruise", title:"Bay of Islands dolphin watching cruise", region:"Bay of Islands", walk:"low", cost:160, durationMins:180, overview:"Relaxed wildlife-focused cruise with big island scenery. Mostly seated with deck time for photos. What to bring: light jacket, sunscreen, water. Mobility note: choose operators with easy boarding.", tags:["Boat", "Wildlife"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255110-Activities-c42-Bay_of_Islands_Northland_Region_North_Island.html", notes:"Great summer option." },
+  { id:"boi-cape-reinga-90mile", title:"Cape Reinga + 90 Mile Beach coach tour", region:"Bay of Islands", walk:"low", cost:210, durationMins:720, overview:"Big full\u2011day coach trip from Paihia to Cape Reinga and 90 Mile Beach. Duration: ~12 hours. Pick\u2011up: Paihia (main pickup points vary by operator). Drop\u2011off: Paihia (return). What to expect: Mostly seated travel with short flat stops and regular breaks. What to bring: water, sunscreen, hat, light jacket, snacks. If knees are sore, skip dune activities and keep stops short/flat.", tags:["Bus tour", "Full-day"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255110-d21035384-Cape_Reinga_90_Mile_Beach_Tour_With_Lunch-Paihia_Bay_of_Islands_Northland_Region_N.html", notes:"Long day but mostly seated." },
+  { id:"boi-kerikeri", title:"Kerikeri: Stone Store + caf\u00e9 stop", region:"Bay of Islands", walk:"low", cost:25, durationMins:180, overview:"Easy half\u2011day outing with historic sites and a relaxed caf\u00e9 by the water. Keep walking short and take your time. What to bring: water, hat. Mobility note: choose flat paths and sit often.", tags:["History", "Easy"], transport:[LINKS.intercity], notes:"Great between tours." },
+  { id:"boi-haruru-falls", title:"Haruru Falls quick viewpoint stop", region:"Bay of Islands", walk:"low", cost:0, free:true, durationMins:45, overview:"Short stop for a waterfall viewpoint. Expect minimal walking and easy photos. What to bring: water and insect repellent. Mobility note: keep to closest viewing areas.", tags:["Waterfall", "Short"], transport:[LINKS.intercity], notes:"Good add\u2011on to Kerikeri/Paihia." },
+  { id:"boi-island-hop", title:"Bay of Islands island-hopping cruise", region:"Bay of Islands", walk:"low", cost:150, durationMins:180, overview:"Seated cruise visiting multiple islands with commentary. Expect minimal walking, excellent scenery and wildlife spotting. What to bring: light jacket, sunscreen, water. Mobility note: very easy.", tags:["Boat", "Scenic"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255110-Activities-c42-Bay_of_Islands_Northland_Region_North_Island.html", notes:"Choose calm weather." },
+  { id:"fish-boi-charter", title:"Bay of Islands fishing charter (half-day)", region:"Bay of Islands", walk:"low", cost:260, durationMins:240, overview:"Choose a half\u2011day charter. Expect a mostly seated/standing boat day with short movements on deck. What to bring: hat, sunscreen, water, light jacket, motion-sickness tablets if needed. Mobility note: confirm boarding support and toilets.", tags:["Fishing", "Boat"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255110-Activities-c61-t217-Paihia_Bay_of_Islands_Northland_Region_North_Island.html", notes:"Pick shorter trips for comfort." },
+  { id:"boi-scenic-drive", title:"Bay of Islands scenic coastal drive (short stops)", region:"Bay of Islands", walk:"low", cost:0, free:true, durationMins:180, overview:"Self-guided drive with multiple short viewpoints and caf\u00e9 stops. Expect lots of sitting and minimal walking if planned. What to bring: water, sunscreen, hat. Mobility note: choose flat stops.", tags:["Scenic", "Drive"], transport:[LINKS.intercity], notes:"Best with vehicle availability." },
+  { id:"boi-multi-day-coach", title:"Bay of Islands multi\u2011day coach tour (from Auckland)", region:"Bay of Islands", walk:"low", cost:980, durationMins:2880, overview:"2\u20133 day coach tour Auckland \u2194 Bay of Islands with accommodation and guided stops. Duration: 2\u20133 days. Pick\u2011up: Auckland CBD (often SkyCity / central hotels). Drop\u2011off: Auckland CBD (return). What to expect: Mostly seated travel with short flat stops and regular breaks. What to bring: water, sunscreen, hat, light jacket, small daypack, medications. Best if you want the Bay of Islands without driving. Ask the operator about step-free boarding and luggage handling.", tags:["Bus tour", "Multi-day"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/Attraction_Products-g255106-zfg11867-Auckland_North_Island.html", notes:"Check itinerary for walking-heavy add-ons and opt out." },
+  { id:"ni-hobbiton", title:"Hobbiton guided tour (Matamata)", region:"North Island trip", walk:"med", cost:370, durationMins:780, overview:"Coach tour from Auckland to Hobbiton (Matamata) with guided set tour. Duration: ~11\u201313 hours. Pick\u2011up: Auckland CBD / SkyCity (varies by operator). Drop\u2011off: Auckland CBD (return). What to expect: Mostly seated coach travel plus a guided set walk with photo stops. What to bring: water, sunscreen, hat, supportive shoes, light jacket. Walking is gentle but includes some standing. Request extra time if needed.", tags:["Bus tour", "Iconic"], transport:[LINKS.intercity, LINKS.hobbiton], rating:4.9, ratingCount:835, ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d13188062-Hobbiton_Movie_Set_Small_Group_Tour_from_Auckland-Auckland_Central_North_Island.html", notes:"Book in advance in January." },
+  { id:"ni-rotorua-daytour", title:"Rotorua day tour (coach from Auckland)", region:"North Island trip", walk:"low", cost:320, durationMins:780, overview:"Full-day guided coach trip Auckland \u2194 Rotorua (geothermal highlights). Duration: ~12\u201313 hours. Pick\u2011up: Auckland CBD / SkyCity (varies by operator). Drop\u2011off: Auckland CBD (return). What to expect: Mostly seated travel with short flat stops and regular breaks. What to bring: water, sunscreen, hat, light jacket. Choose attractions with the flattest paths and plan seated breaks.", tags:["Bus tour", "Full-day"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11454186-Rotorua_Day_Tour_from_Auckland-Auckland_Central_North_Island.html", notes:"Long day; mostly seated." },
+  { id:"ni-rotorua-polynesian", title:"Rotorua: Polynesian Spa soak", region:"North Island trip", walk:"low", cost:75, durationMins:120, overview:"Restorative mineral pools with lots of sitting and minimal walking. Expect 1\u20132 hours soaking and relaxing. What to bring: swimsuit, towel, water. Mobility note: very knee\u2011friendly.", tags:["Spa", "Recovery"], transport:[LINKS.intercity], notes:"Book ahead in January." },
+  { id:"ni-rotorua-tepuia", title:"Rotorua: Te Puia guided experience", region:"North Island trip", walk:"med", cost:120, durationMins:180, overview:"Guided geothermal and cultural experience. Expect walking on paths and short standing segments, balanced with stops and commentary. What to bring: water, hat, sunscreen, supportive shoes. Mobility note: ask for the most accessible route.", tags:["Culture", "Geothermal"], transport:[LINKS.intercity], notes:"Do a caf\u00e9 break afterwards." },
+  { id:"ni-rotorua-gondola", title:"Rotorua Skyline Gondola + views (optional luge)", region:"North Island trip", walk:"low", cost:70, durationMins:120, overview:"Gondola ride to panoramic views with minimal walking. You can skip the luge and just enjoy the scenery and caf\u00e9. What to bring: light jacket, water. Mobility note: stay seated and keep it gentle.", tags:["Views", "Easy"], transport:[LINKS.intercity], notes:"Great sunset option." },
+  { id:"ni-waitomo", title:"Waitomo Glowworm Caves (guided tour)", region:"North Island trip", walk:"med", cost:75, durationMins:180, overview:"Guided cave tour with glowworms and a short underground boat ride. Some steps and low lighting; the pace is controlled. What to bring: warm layer, closed shoes. Mobility note: take stairs slowly and use handrails.", tags:["Caves", "Guided"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/Attraction_Review-g609161-d258369-Reviews-Waitomo_Glowworm_Caves-Waitomo_Caves_Waikato_Region_North_Island.html", notes:"Great cooler-day activity." },
+  { id:"ni-taupo-daytour", title:"Taup\u014d & Huka Falls day tour (coach from Auckland)", region:"North Island trip", walk:"low", cost:330, durationMins:780, overview:"Coach tour Auckland \u2194 Taup\u014d with Huka Falls viewpoints and lake stops. Duration: ~12\u201313 hours. Pick\u2011up: Auckland CBD / SkyCity (varies by operator). Drop\u2011off: Auckland CBD (return). What to expect: Mostly seated travel with short flat stops and regular breaks. What to bring: water, sunscreen, hat, light jacket. Viewpoints are short flat walks; keep stops gentle.", tags:["Bus tour", "Scenic"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d15659538-Taupo_Day_Tour_from_Auckland-Auckland_Central_North_Island.html", notes:"Long day; mostly seated." },
+  { id:"ni-taupo-hukafalls", title:"Taup\u014d: Huka Falls viewpoint", region:"Central Plateau (Taupo)", walk:"low", cost:0, free:true, durationMins:45, overview:"High-impact scenery with minimal effort. Short, mostly flat paths to viewpoints with rails. What to bring: water, sunscreen. Mobility note: use the closest viewpoints only.", tags:["Views", "Easy"], transport:[LINKS.intercity], notes:"Great quick stop." },
+  { id:"ni-taupo-cruise", title:"Taup\u014d: lake cruise (seated sightseeing)", region:"Central Plateau (Taupo)", walk:"low", cost:60, durationMins:90, overview:"Calm boat cruise with big lake views. Expect mostly seated time with photo moments on deck. What to bring: light jacket, sunscreen. Mobility note: very easy.", tags:["Boat", "Easy"], transport:[LINKS.intercity], notes:"Choose calm weather." },
+  { id:"ni-rotorua-trout", title:"Rotorua trout fishing (boat-based)", region:"North Island trip", walk:"low", cost:450, durationMins:240, overview:"Boat-based trout fishing with a guide. Expect mostly seated fishing and short movements on deck. What to bring: hat, sunscreen, warm layer, water. Mobility note: confirm boarding support and toilets.", tags:["Fishing", "Trout"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255111-Activities-c61-t217-Rotorua_Rotorua_District_Bay_of_Plenty_Region_North_Island.html", notes:"Pick shorter trips if unsure." },
+  { id:"ni-taupo-trout", title:"Taup\u014d trout fishing (boat-based)", region:"Central Plateau (Taupo)", walk:"low", cost:450, durationMins:240, overview:"Boat charter on Lake Taup\u014d targeting trout. Mostly seated fishing; gear often provided. What to bring: hat, sunscreen, warm layer, water. Mobility note: confirm boarding and facilities.", tags:["Fishing", "Trout"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255113-Activities-c61-t217-Taupo_Taupo_District_Waikato_Region_North_Island.html", notes:"Book ahead in January." },
+  { id:"cor-cathedralcove-cruise", title:"Cathedral Cove boat cruise (Coromandel)", region:"Coromandel (trip)", walk:"low", cost:155, durationMins:120, overview:"Coastal boat cruise\u2014best way to see Cathedral Cove without the steep track. Expect ocean spray, shaded seating and photo stops. What to bring: sunscreen, hat, light jacket, water. Mobility note: very knee-friendly.", tags:["Boat", "Iconic"], transport:[LINKS.intercity], ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g488373-d20482673-2_Hour_Cathedral_Cove_and_Volcanic_Coast_Cruise_with_Shade_Canopy-Whitianga_Coroma.html", notes:"Boat avoids the hike." },
+  { id:"cor-hot-water", title:"Hot Water Beach (short visit at low tide)", region:"Coromandel (trip)", walk:"med", cost:0, free:true, durationMins:120, overview:"Unique beach where warm water can bubble up at low tide. Sand walking can be tiring; keep it short. What to bring: water, hat, sunscreen, towel. Mobility note: avoid long sand walks.", tags:["Beach", "Unique"], transport:[LINKS.intercity], notes:"Time it for low tide." },
+  { id:"cor-hahei-lookouts", title:"Hahei viewpoints (skip Cathedral Cove track)", region:"Coromandel (trip)", walk:"low", cost:0, free:true, durationMins:90, overview:"Enjoy Hahei/Te Whanganui\u2011A\u2011Hei area via flat viewpoints and caf\u00e9s without doing the steep Cathedral Cove track. What to bring: water, sunscreen, hat. Mobility note: choose flat stops only.", tags:["Scenic", "Easy"], transport:[LINKS.intercity], notes:"Use the boat cruise for Cove views." },
+  { id:"cor-driving-creek", title:"Driving Creek Railway (Coromandel Town)", region:"Coromandel (trip)", walk:"low", cost:45, durationMins:90, overview:"Seated narrow-gauge train ride through regenerating forest with great views. Minimal walking, lots of sitting. What to bring: light jacket, water. Mobility note: very easy.", tags:["Scenic", "Easy"], transport:[LINKS.intercity], notes:"Book ahead in summer." },
+  { id:"cor-whitianga", title:"Whitianga waterfront + caf\u00e9", region:"Coromandel (trip)", walk:"low", cost:0, free:true, durationMins:90, overview:"Flat waterfront with seating and caf\u00e9s. Expect a gentle stroll and long sit-down breaks. What to bring: sunscreen, water. Mobility note: keep walking minimal.", tags:["Easy", "Waterfront"], transport:[LINKS.intercity], notes:"Great between boat trips." },
+  { id:"cor-whangamata", title:"Whangamat\u0101 beach day (short strolls)", region:"Coromandel (trip)", walk:"low", cost:0, free:true, durationMins:120, overview:"Classic beach town with flat promenade and caf\u00e9s. Expect relaxed sitting and optional very short walks. What to bring: hat, sunscreen, water. Mobility note: avoid long sand walking.", tags:["Beach", "Easy"], transport:[LINKS.intercity], notes:"Go early/late in January heat." },
+  { id:"sports-eden-tour", title:"Eden Park stadium tour", region:"Sports & venues", walk:"low", cost:35, durationMins:90, overview:"Behind-the-scenes tour (changing rooms, history and views). Expect short walking segments and standing. What to bring: water. Mobility note: ask about stairs/lifts and take it slow.", tags:["Venue"], transport:[LINKS.atPlanner, LINKS.edenTour], notes:"Check tour times online." },
+  { id:"sports-eden-events", title:"Eden Park match/event (cricket/football)", region:"Sports & venues", walk:"low", cost:30, durationMins:180, overview:"Choose a match date and enjoy the atmosphere. Expect queues and some walking\u2014pick seats near entrances to minimise stairs. What to bring: water, light jacket. Mobility note: arrive early to avoid rushing.", tags:["Sport"], transport:[LINKS.atPlanner, LINKS.edenEvents], notes:"Look for accessible seating." },
+  { id:"sports-auckland-fc", title:"Auckland FC match (fixtures)", region:"Sports & venues", walk:"low", cost:30, durationMins:150, overview:"Evening match with a lively crowd. Expect some walking to seats\u2014choose accessible seating and plan transport home. What to bring: light jacket and water. Mobility note: arrive early.", tags:["Football"], transport:[LINKS.atPlanner, LINKS.auckAFCMatches], notes:"Check venue details per fixture." },
+  { id:"sports-cricket", title:"Cricket at Eden Park (choose a day)", region:"Sports & venues", walk:"low", cost:30, durationMins:240, overview:"A relaxed summer cricket session. Expect lots of sitting and a calm pace. What to bring: sunscreen, hat, water. Mobility note: choose seats near entrances and avoid steep steps.", tags:["Cricket"], transport:[LINKS.atPlanner, LINKS.edenEvents], notes:"Day matches are hot\u2014pack sun protection." },
+  { id:"sports-nz-allblacks", title:"Stadium museum/store visit (short stop)", region:"Sports & venues", walk:"low", cost:20, durationMins:60, overview:"Short, easy venue stop for photos, memorabilia or a quick tour add\u2011on. What to bring: water. Mobility note: keep it brief and seated.", tags:["Short"], transport:[LINKS.atPlanner, LINKS.edenTour], notes:"Use as a light add-on." },
+  { id:"si-nelson-base", title:"Nelson waterfront + caf\u00e9s (easy base day)", region:"South Island (flight)", walk:"low", cost:0, free:true, durationMins:120, overview:"Flat waterfront and caf\u00e9 hopping with minimal walking. Expect a relaxed pace and plenty of seating. What to bring: hat, sunscreen, water. Mobility note: keep strolls short.", tags:["Easy", "City"], transport:[LINKS.airnz], notes:"Great January weather." },
+  { id:"si-abel-tasman-cruise", title:"Abel Tasman coastal cruise (no hiking)", region:"South Island (flight)", walk:"low", cost:180, durationMins:240, overview:"Seated boat cruise along Abel Tasman coastline with beaches and wildlife. Expect minimal walking and great scenery. What to bring: sunscreen, hat, light jacket, water. Mobility note: very knee\u2011friendly.", tags:["Boat", "Scenic"], transport:[LINKS.airnz], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255104-Activities-c42-Nelson_Nelson_Tasman_Region_South_Island.html", notes:"Choose cruise-only options." },
+  { id:"si-nelson-abel-coach", title:"Nelson + Abel Tasman scenic day (coach)", region:"South Island (flight)", walk:"low", cost:420, durationMins:360, overview:"Scenic coach day from Nelson to Abel Tasman area with short flat stops and long seated sections. What to bring: sunscreen, hat, water, light jacket. Mobility note: choose stops with easy access.", tags:["Bus tour", "Scenic"], transport:[LINKS.airnz], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255104-Activities-c42-t224-Nelson_Nelson_Tasman_Region_South_Island.html", notes:"Prefer cruises over walks." },
+  { id:"si-queenstown-base", title:"Queenstown lakefront + caf\u00e9 day", region:"South Island (flight)", walk:"low", cost:0, free:true, durationMins:120, overview:"Flat waterfront with caf\u00e9s and benches. Expect easy strolling and long seated breaks with alpine views. What to bring: light jacket, water. Mobility note: keep walks short and flat.", tags:["Easy", "Scenic"], transport:[LINKS.airnz], notes:"Sunset is excellent." },
+  { id:"si-queenstown-lake-cruise", title:"Lake Wakatipu cruise (seated sightseeing)", region:"South Island (flight)", walk:"low", cost:90, durationMins:120, overview:"Seated cruise on Lake Wakatipu with mountain views. Minimal walking and plenty of seating. What to bring: light jacket, sunscreen, water. Mobility note: very easy.", tags:["Boat", "Scenic"], transport:[LINKS.airnz], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255122-Activities-c42-Queenstown_Otago_Region_South_Island.html", notes:"Choose calm weather." },
+  { id:"si-queenstown-arrowtown", title:"Arrowtown short heritage visit (flat main street)", region:"South Island (flight)", walk:"low", cost:0, free:true, durationMins:120, overview:"Historic town with flat main street caf\u00e9s and shops. Expect short, gentle wandering and sitting. What to bring: light jacket, water. Mobility note: stay on the flat main street.", tags:["Heritage", "Easy"], transport:[LINKS.airnz], notes:"Great half-day." },
+  { id:"si-milford-sound", title:"Milford Sound coach + cruise (from Queenstown)", region:"South Island (flight)", walk:"low", cost:260, durationMins:720, overview:"Iconic full\u2011day coach trip Queenstown \u2194 Milford Sound with fjord cruise. Duration: ~12 hours. Pick\u2011up: Queenstown CBD (tour pickup points vary). Drop\u2011off: Queenstown CBD (return). What to expect: Mostly seated coach travel with scenic stops, then a seated fjord cruise. What to bring: light jacket, water, snacks, motion-sickness tablets (if needed). Very little walking\u2014ideal for mobility limits. Weather can change quickly; pack layers.", tags:["Bus tour", "Iconic"], transport:[LINKS.airnz], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255122-Activities-c42-Queenstown_Otago_Region_South_Island.html", notes:"Book ahead in peak season." },
+  { id:"si-wanaka-lakefront", title:"W\u0101naka lakefront stroll (flat)", region:"South Island (flight)", walk:"low", cost:0, free:true, durationMins:90, overview:"Flat lakefront promenade with benches and caf\u00e9s. Expect a gentle stroll and long sit-down breaks with alpine scenery. What to bring: water, light jacket. Mobility note: keep it short.", tags:["Easy", "Scenic"], transport:[LINKS.airnz], notes:"Great morning option." },
+  { id:"si-tekapo", title:"Lake Tekapo scenic stop", region:"South Island (flight)", walk:"low", cost:0, free:true, durationMins:90, overview:"Alpine lake views with flat lakeside paths and caf\u00e9s. Expect short walks and big scenery. What to bring: warm layer (cool evenings), water. Mobility note: keep to closest viewpoints.", tags:["Scenic", "Lake"], transport:[LINKS.airnz], notes:"Stunning in clear weather." },
+  { id:"si-dunedin-city", title:"Dunedin: city highlights coach tour", region:"South Island (flight)", walk:"low", cost:140, durationMins:180, overview:"Coach-based city highlights with short photo stops and minimal walking. Great way to see Dunedin architecture at a relaxed pace. What to bring: light jacket, water. Mobility note: choose accessible stops.", tags:["Bus tour", "City"], transport:[LINKS.airnz], ratingUrl:"https://www.tripadvisor.co.nz/Tourism-g255119-Dunedin_Otago_Region_South_Island-Vacations.html", notes:"Bring layers even in summer." },
+  { id:"si-otago-peninsula", title:"Otago Peninsula wildlife coach tour", region:"South Island (flight)", walk:"low", cost:150, durationMins:240, overview:"Coach tour from Dunedin to Otago Peninsula for albatross/penguin viewing and coastal scenery. Minimal walking; mostly seated. What to bring: warm layer, water. Mobility note: very suitable.", tags:["Wildlife", "Bus tour"], transport:[LINKS.airnz], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255119-Activities-c42-Dunedin_Otago_Region_South_Island.html", notes:"Weather can be cooler/windy." },
+  { id:"si-chch-tram", title:"Christchurch: city tram + gardens edge", region:"South Island (flight)", walk:"low", cost:120, durationMins:180, overview:"Gentle CBD sightseeing using the tram and short flat strolls. Expect caf\u00e9s, parks and easy pacing. What to bring: water, light jacket. Mobility note: keep to one anchor activity per day.", tags:["City", "Easy"], transport:[LINKS.airnz], notes:"Great 2\u20133 day side trip base." },
+  { id:"auck-rotoroa-day", title:"Rotoroa Island (easy wildlife day)", region:"Hauraki Gulf islands", walk:"med", cost:110, durationMins:420, free:false, transport:[LINKS.fullers], overview:"Ferry to a quieter island with beaches and wildlife. Expect mostly gentle walking near the wharf and lots of sitting. What to bring: water, hat, sunscreen. Mobility note: stay near flat areas.", tags:[], notes:"Choose the most accessible areas." },
+  { id:"auck-silverdale", title:"Silverdale/Albany easy shopping + lunch", region:"Auckland base", walk:"low", cost:0, durationMins:120, free:true, transport:[LINKS.atPlanner], overview:"Very low-effort outing: drive or bus, short flat walking, long seated lunch. What to bring: water. Mobility note: keep it simple and rest often.", tags:["Easy"], ratingUrl:null, notes:"Good recovery day." },
+  { id:"auck-takapuna", title:"Takapuna beach + caf\u00e9", region:"Auckland base", walk:"low", cost:0, durationMins:120, free:true, transport:[LINKS.atPlanner], overview:"Flat seaside suburb with caf\u00e9s and a relaxed beach promenade. Expect short strolls and long seated breaks. What to bring: hat, sunscreen, water. Mobility note: stay on the flat promenade.", tags:["Beach"], notes:"Great evening option." },
+  { id:"auck-rucker", title:"Auckland: waterfront dinner cruise (seated)", region:"Auckland base", walk:"low", cost:150, durationMins:150, free:false, transport:[LINKS.atPlanner], overview:"Seated cruise with city lights and dinner options. Expect minimal walking and plenty of sitting. What to bring: light jacket. Mobility note: very knee\u2011friendly.", tags:["Boat"], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255106-Activities-c42-Auckland_Central_North_Island.html", notes:"Book ahead." },
+  { id:"boi-scenic-flight", title:"Bay of Islands scenic flight (short)", region:"Bay of Islands", walk:"low", cost:220, durationMins:60, free:false, transport:[LINKS.intercity], overview:"Short scenic flight over islands and coast. Expect minimal walking and big views. What to bring: light jacket, camera. Mobility note: excellent for limited mobility.", tags:["Scenic"], ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255110-Activities-c42-Bay_of_Islands_Northland_Region_North_Island.html", notes:"Weather dependent." },
+  { id:"ni-rotorua-agrodome", title:"Rotorua: Agrodome show (seated)", region:"North Island trip", walk:"low", cost:55, durationMins:90, free:false, transport:[LINKS.intercity], overview:"Seated farm show with humour and animals. Expect minimal walking and easy pacing. What to bring: light jacket. Mobility note: very easy.", tags:["Show"], ratingUrl:"https://www.tripadvisor.co.nz/Attraction_Review-g255111-d256921-Reviews-Agrodome-Rotorua_Rotorua_District_Bay_of_Plenty_Region_North_Island.html", notes:"Good family-friendly outing." },
+  { id:"ni-rotorua-lake-cruise", title:"Rotorua: Lake cruise (seated sightseeing)", region:"North Island trip", walk:"low", cost:55, durationMins:90, free:false, transport:[LINKS.intercity], overview:"Seated cruise on Lake Rotorua with commentary and views. Expect minimal walking. What to bring: light jacket, water. Mobility note: very easy.", tags:["Boat"], notes:"Choose calm weather." },
+  { id:"ni-taupo-aratiatia", title:"Taup\u014d: Aratiatia Rapids viewing", region:"Central Plateau (Taupo)", walk:"low", cost:0, durationMins:60, free:true, transport:[LINKS.intercity], overview:"Short viewpoint stop for the rapids (especially during releases). Minimal walking and big photo opportunities. What to bring: water. Mobility note: stick to closest rails.", tags:["Views"], notes:"Check release times." },
+  { id:"si-otago-larnach", title:"Dunedin: Larnach Castle (accessible highlights)", region:"South Island (flight)", walk:"med", cost:45, durationMins:150, free:false, transport:[LINKS.airnz], overview:"Historic castle with gardens; choose the most accessible indoor highlights and take caf\u00e9 breaks. What to bring: water, light jacket. Mobility note: ask about stairs and accessible routes.", tags:["Heritage"], notes:"Keep it short and seated." }
+];
 
-    { id:"free-mission-bay", title:"Mission Bay beach + cafés", region:"Free / low-cost", walk:"low", cost:0, free:true,
-      overview:"Flat waterfront promenade, plenty of benches, cafés and an easy swim/people-watch day.",
-      tags:["Beach","Easy"], transport:[LINKS.atPlanner], notes:"Go early/late to avoid heat." },
+  function ensureBookingUrls(){
+    ACTIVITIES.forEach(a=>{
+      if (a.bookingUrl) return;
+      const t = (a.title||"").toLowerCase();
+      const r = (a.region||"").toLowerCase();
+      // Coach / bus / multi-day tours
+      if (t.includes("coach") || t.includes("day tour") || t.includes("multi") || t.includes("tour")){
+        // If TripAdvisor product page exists (ratingUrl), it's also a booking channel
+        if (a.ratingUrl) { a.bookingUrl = a.ratingUrl; return; }
+        // Fallback to InterCity or general operator search
+        a.bookingUrl = LINKS.intercity.url;
+        return;
+      }
+      // Ferries / islands
+      if (t.includes("ferry") || t.includes("waiheke") || t.includes("tiritiri") || t.includes("rangitoto") || r.includes("hauraki")){
+        a.bookingUrl = LINKS.fullers.url;
+        return;
+      }
+      // Bay of Islands cruises/fishing
+      if (r.includes("bay of islands") && (t.includes("cruise") || t.includes("fishing") || t.includes("hole in the rock"))){
+        if (a.ratingUrl) { a.bookingUrl = a.ratingUrl; return; }
+        a.bookingUrl = LINKS.intercity.url;
+        return;
+      }
+      // Specific attractions with official booking
+      if (t.includes("sky tower")) a.bookingUrl = "https://skycityauckland.co.nz/sky-tower/";
+      else if (t.includes("polynesian spa")) a.bookingUrl = "https://www.polynesianspa.co.nz/";
+      else if (t.includes("te puia")) a.bookingUrl = "https://www.tepuia.com/";
+      else if (t.includes("hobbiton")) a.bookingUrl = "https://www.hobbitontours.com/";
+      else if (t.includes("eden park")) a.bookingUrl = LINKS.edenTour.url;
+      else if (t.includes("aquarium") || t.includes("kelly tarlton")) a.bookingUrl = "https://www.kellytarltons.co.nz/";
+      else if (t.includes("zoo")) a.bookingUrl = "https://www.aucklandzoo.co.nz/";
+      else if (t.includes("motat")) a.bookingUrl = "https://www.motat.nz/";
+      else if (t.includes("fishing")) { if (a.ratingUrl) a.bookingUrl = a.ratingUrl; }
+    });
+  }
+  ensureBookingUrls();
 
-    { id:"buffer", title:"Rest / buffer day", region:"Free / low-cost", walk:"low", cost:0, free:true,
-      overview:"A deliberately light day: sleep in, a café, and only a short flat outing if desired.",
-      tags:["Recovery"], transport:[LINKS.atPlanner], notes:"Keep this day intentionally light." },
 
-    { id:"auck-waterfront", title:"Auckland waterfront (Viaduct/Wynyard)", region:"Auckland base", walk:"low", cost:25,
-      overview:"Short, flat strolls between cafés and marina views. Easy to stop often and keep it gentle in the heat.",
-      tags:["Easy","Flat"], transport:[LINKS.atPlanner], notes:"Shade + seating + short distances." },
-
-    { id:"auck-museum", title:"Auckland Museum (slow pace)", region:"Auckland base", walk:"low", cost:35,
-      overview:"Indoor, air‑conditioned galleries with seating. Choose a few highlights and take breaks.",
-      tags:["Indoor"], transport:[LINKS.atPlanner], notes:"Pick 2–3 areas only, then leave." },
-
-    { id:"auck-eco-safari", title:"Dolphin & Whale Eco-Safari cruise", region:"Auckland base", walk:"low", cost:219,
-      overview:"Seated boat cruise searching for dolphins/whales in the Hauraki Gulf. Minimal walking, big payoff.",
-      tags:["Boat","Wildlife"], transport:[LINKS.atPlanner],
-      rating:4.6, ratingCount:1422,
-      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11454305-Auckland_Dolphin_and_Whale_Watching_Eco_Safari_Cruise-Auckland_Central_North_Islan.html",
-      notes:"Sea conditions vary; bring layers." },
-
-    { id:"fish-auck-megabites", title:"Auckland fishing charter (Megabites)", region:"Auckland base", walk:"low", cost:230,
-      overview:"Half-day style fishing on a charter boat (snapper etc.). Mostly seated/standing on deck.",
-      tags:["Fishing","Boat"], transport:[LINKS.atPlanner],
-      ratingUrl:"https://www.tripadvisor.co.nz/Attraction_Review-g255106-d3494058-Reviews-Megabites_Fishing_Charter_Ltd-Auckland_Central_North_Island.html",
-      notes:"Confirm boarding accessibility and toilet facilities." },
-
-    { id:"hg-devonport", title:"Devonport ferry + lunch", region:"Hauraki Gulf islands", walk:"low", cost:35,
-      overview:"Short ferry ride, cute village cafés, flat waterfront — ideal low-walking outing.",
-      tags:["Ferry","Easy"], transport:[LINKS.fullers, LINKS.atPlanner], notes:"2–3 hours max is ideal." },
-
-    { id:"hg-waiheke-premium", title:"Waiheke wine tour (transport included)", region:"Hauraki Gulf islands", walk:"low", cost:220,
-      overview:"Ferry over then a guided tour with transport between vineyards — minimal walking and great scenery.",
-      tags:["Wine","Scenic"], transport:[LINKS.fullers],
-      rating:4.8, ratingCount:446,
-      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g285729-d11466288-Waiheke_Island_Premium_Wine_Tour_with_Tastings-Waiheke_Island_North_Island.html",
-      notes:"Choose a tour with transport included to minimise walking." },
-
-    { id:"hg-tiritiri", title:"Tiritiri Matangi day trip", region:"Hauraki Gulf islands", walk:"med", cost:160,
-      overview:"Wildlife sanctuary island. Choose the shortest loop and stop frequently; amazing birdlife.",
-      tags:["Wildlife"], transport:[LINKS.fullers],
-      rating:4.8, ratingCount:34,
-      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d11453566-Tiritiri_Matangi_Island_Day_Trip_from_Auckland_with_Optional_Guided_Walk-Auckland_.html",
-      notes:"Keep walking light and planned." },
-
-    { id:"boi-russell", title:"Paihia ⇄ Russell ferry + café", region:"Bay of Islands", walk:"low", cost:25,
-      overview:"Quick ferry across the harbour. Russell is compact with easy café stops and waterfront views.",
-      tags:["Ferry"], transport:[LINKS.boiFerry], notes:"Great low-walking outing." },
-
-    { id:"boi-hole-in-rock", title:"Hole in the Rock cruise (Bay of Islands)", region:"Bay of Islands", walk:"low", cost:190,
-      overview:"Scenic cruise through islands (often dolphins). Mostly seated; optional short island stop.",
-      tags:["Boat","Iconic"], transport:[LINKS.intercity],
-      rating:4.6, ratingCount:114,
-      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255110-d24142517-Hole_in_the_Rock_Scenic_Cruise_including_Dolphins_and_Island_stop-Paihia_Bay_of_Is.html",
-      notes:"Confirm boarding accessibility." },
-
-    { id:"boi-cape-reinga-90mile", title:"Cape Reinga + 90 Mile Beach day tour", region:"Bay of Islands", walk:"low", cost:210,
-      overview:"Big day out (mostly seated) to Cape Reinga and 90 Mile Beach. Great in January; opt out of sandboarding if needed.",
-      tags:["Full-day"], transport:[LINKS.intercity],
-      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255110-d21035384-Cape_Reinga_90_Mile_Beach_Tour_With_Lunch-Paihia_Bay_of_Islands_Northland_Region_N.html",
-      notes:"Long day but mostly seated; keep walking minimal." },
-
-    { id:"fish-boi-list", title:"Bay of Islands fishing charters (pick one)", region:"Bay of Islands", walk:"low", cost:260,
-      overview:"Choose a private or shared charter (half-day/full-day). Great summer fishing with minimal walking.",
-      tags:["Fishing"], transport:[LINKS.intercity],
-      ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255110-Activities-c61-t217-Paihia_Bay_of_Islands_Northland_Region_North_Island.html",
-      notes:"Pick accessibility + duration + private/shared." },
-
-    { id:"ni-hobbiton-auck", title:"Hobbiton tour (from Auckland)", region:"North Island trip", walk:"med", cost:370,
-      overview:"Guided walk through the movie set. Some standing and gentle hills; paced groups with photo stops.",
-      tags:["Must-do"], transport:[LINKS.intercity, LINKS.hobbiton],
-      rating:4.9, ratingCount:835,
-      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g255106-d13188062-Hobbiton_Movie_Set_Small_Group_Tour_from_Auckland-Auckland_Central_North_Island.html",
-      notes:"Choose coach option + breaks." },
-
-    { id:"rotorua-trout-list", title:"Rotorua trout fishing (choose boat-based)", region:"North Island trip", walk:"low", cost:450,
-      overview:"Pick a guide/charter — boat-based lake trout fishing is the most knee-friendly option.",
-      tags:["Trout","Fishing"], transport:[LINKS.intercity],
-      ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255111-Activities-c61-t217-Rotorua_Rotorua_District_Bay_of_Plenty_Region_North_Island.html",
-      notes:"Confirm boarding & seating." },
-
-    { id:"taupo-trout-list", title:"Taupō trout fishing (choose boat-based)", region:"Central Plateau (Taupo)", walk:"low", cost:450,
-      overview:"Boat charters on Lake Taupō for trout. Minimal walking, typically all gear provided.",
-      tags:["Trout","Fishing"], transport:[LINKS.intercity],
-      ratingUrl:"https://www.tripadvisor.co.nz/Attractions-g255113-Activities-c61-t217-Taupo_Taupo_District_Waikato_Region_North_Island.html",
-      notes:"Confirm boarding accessibility." },
-
-    { id:"cor-cathedralcove-cruise", title:"Cathedral Cove boat cruise (Coromandel)", region:"Coromandel (trip)", walk:"low", cost:155,
-      overview:"Boat cruise along the coastline — the best way to ‘see’ Cathedral Cove without the steep track.",
-      tags:["Boat","Iconic"], transport:[LINKS.intercity],
-      ratingUrl:"https://www.tripadvisor.co.nz/AttractionProductReview-g488373-d20482673-2_Hour_Cathedral_Cove_and_Volcanic_Coast_Cruise_with_Shade_Canopy-Whitianga_Coroma.html",
-      notes:"Boat option avoids the hike." },
-
-    { id:"sports-eden-tour", title:"Eden Park stadium tour", region:"Sports & venues", walk:"low", cost:35,
-      overview:"Behind-the-scenes tour of NZ’s most famous stadium. Gentle pace; confirm any stairs on the route.",
-      tags:["Venue"], transport:[LINKS.atPlanner, LINKS.edenTour], notes:"Check tour times on Eden Park site." },
-
-    { id:"sports-eden-events", title:"Eden Park match/event (cricket/football)", region:"Sports & venues", walk:"low", cost:30,
-      overview:"Pick a match date and enjoy the atmosphere. Choose seats near entrances to minimise stairs.",
-      tags:["Sport"], transport:[LINKS.atPlanner, LINKS.edenEvents], notes:"Use events calendar for January listings." },
-
-    { id:"sports-auckland-fc", title:"Auckland FC match (fixtures)", region:"Sports & venues", walk:"low", cost:30,
-      overview:"Local pro football match day. Great evening activity with minimal walking if you plan seating/transport.",
-      tags:["Football"], transport:[LINKS.atPlanner, LINKS.auckAFCMatches], notes:"Check match dates/times + venue." },
-
-    { id:"si-queenstown", title:"Queenstown (seated scenic options)", region:"South Island (flight)", walk:"low", cost:220,
-      overview:"Gondola, lake cruises, and short flat waterfront walks — choose seated experiences over hikes.",
-      tags:["Scenic"], transport:[LINKS.airnz], notes:"Keep walks short/flat." }
-  ];
-
-  const LS_KEY = "nzTripPlanner_ios_v1";
+  // --- Storage ---
+  const LS_KEY = "nzTripPlanner_ios_v10";
   let storageOk = true;
   function lsGet(){ try{ return localStorage.getItem(LS_KEY);}catch(e){ storageOk=false; return null; } }
   function lsSet(v){ try{ localStorage.setItem(LS_KEY, v);}catch(e){ storageOk=false; } }
@@ -518,6 +540,7 @@
   function defaultState(){
     const start = todayISO();
     return {
+      viewMode: "cards",
       budgets: { day: 180 },
       walkFilter: "med",
       regionFilter: "All",
@@ -537,11 +560,166 @@
     try { return JSON.parse(raw); } catch { return defaultState(); }
   })();
 
+  // Normalize older saved plans so links/reviews/overviews reappear
+  if (!state.viewMode) state.viewMode = "cards";
+  if (!state.budgets) state.budgets = { day: 180 };
+  if (!state.timeRules) state.timeRules = { dayStart:"10:00", slotMins:120, breakMins:45 };
+  state.items = Array.isArray(state.items) ? state.items : [];
+  state.items.forEach(it=>{
+    if (!it.id) it.id = uid();
+    if (!it.activityId || !ACTIVITIES.find(a=>a.id===it.activityId)) it.activityId = "buffer";
+    const savedCost = it.cost;
+    applyActivity(it, it.activityId);
+    if (savedCost != null && !Number.isNaN(Number(savedCost))) it.cost = savedCost;
+    if (!it.date) it.date = todayISO();
+    if (!it.time) it.time = state.timeRules.dayStart || "10:00";
+  });
+
   function save(){ lsSet(JSON.stringify(state)); }
 
+  // --- Helpers ---
   const $ = (id)=>document.getElementById(id);
-  function esc(s){ return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
-  function money(n){ const v=Number(n); if (Number.isNaN(v)) return ""; return "NZ$"+v.toFixed(0); }
+  function esc(s){ return String(s||"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
+  
+  function isOutdoor(a){
+    const txt = (a.overview||"").toLowerCase() + " " + (a.title||"").toLowerCase() + " " + (a.tags||[]).join(" ").toLowerCase();
+    return /beach|walk|garden|park|view|scenic|island|cruise|boat|wildlife|falls|lake|tour|volcan|coast|harbour|harbor/.test(txt);
+  }
+  function isBoat(a){
+    const txt = (a.overview||"").toLowerCase() + " " + (a.title||"").toLowerCase() + " " + (a.tags||[]).join(" ").toLowerCase();
+    return /boat|cruise|ferry|sail|harbour|harbor/.test(txt);
+  }
+  function fullOverview(a){
+    // Ensure at least a few sentences: what to expect + what to bring + mobility note
+    let o = (a.overview || "").trim();
+    const sentences = o ? o.split(/(?<=[.!?])\s+/).filter(Boolean) : [];
+    const bring = [];
+    if (isOutdoor(a)) bring.push("water", "sunscreen", "a hat");
+    if (isBoat(a)) bring.push("a light jacket", "motion-sickness tablets (if needed)");
+    if ((a.walk||"") === "med") bring.push("supportive shoes");
+    if ((a.walk||"") === "low") bring.push("something comfortable to sit in");
+
+    const bringLine = bring.length ? ("What to bring: " + Array.from(new Set(bring)).join(", ") + ".") : "What to bring: water and comfortable shoes.";
+    const mobilityLine = ((a.walk||"") === "med")
+      ? "Mobility note: keep the route short, take frequent seated breaks, and avoid steep tracks."
+      : "Mobility note: plan a slow pace with regular rest stops and minimise steps/transfers.";
+
+    // If too short, pad with helpful sentences
+    if (sentences.length < 2){
+      const extra = "What to expect: a relaxed pace with planned breaks and short stopovers rather than long continuous walking.";
+      o = (o ? (o + " ") : "") + extra;
+    }
+    if (!/What to bring:/i.test(o)) o += (o.endsWith(".") ? " " : ". ") + bringLine;
+    if (!/Mobility note:/i.test(o)) o += " " + mobilityLine;
+
+    // Keep it tidy (max ~3–5 sentences)
+    const cleaned = o.replace(/\s+/g," ").trim();
+    return cleaned;
+  }
+  function transportLinksHtml(a){
+    const links = Array.isArray(a.transport) ? a.transport : [];
+    const parts = links.map(t => {
+      const url = t && t.url ? String(t.url) : "";
+      const label = t && t.label ? String(t.label) : "Transport";
+      return url ? `<a class="linkBtn" href="${esc(url)}" target="_blank" rel="noreferrer noopener">${esc(label)}</a>` : "";
+    }).filter(Boolean);
+    return parts.join(" ");
+  }
+
+  function bookingLinkHtml(a){
+    const url = a && a.bookingUrl ? String(a.bookingUrl) : "";
+    if (!url) return "";
+    return `<a class="linkBtn" href="${esc(url)}" target="_blank" rel="noreferrer noopener">Book</a>`;
+  }
+
+  function fmtDuration(mins){
+    const m = Number(mins||0);
+    if (!m || m <= 0) return "";
+    const h = Math.floor(m/60);
+    const r = m % 60;
+    if (h <= 0) return `${r} min`;
+    if (r === 0) return `${h} hr`;
+    return `${h} hr ${r} min`;
+  }
+  function estimateDurationMins(a){
+    // If activity defines durationMins, use it.
+    if (a && a.durationMins) return Number(a.durationMins)||0;
+
+    const t = ((a?.title||"") + " " + (a?.overview||"") + " " + (a?.tags||[]).join(" ")).toLowerCase();
+
+    // Explicit cues
+    if (/multi-?day|2–3 day|2-3 day|3 day|two day|three day/.test(t)) return 2880; // placeholder: 2 days
+    if (/full[- ]day|12–13|12-13|12 hours|13 hours|10 hours|11 hours|9 hours|8 hours/.test(t)) return 720;
+    if (/half[- ]day|4 hours|5 hours/.test(t)) return 240;
+
+    // Place types
+    if (/cruise|boat|ferry|sail/.test(t)) return 120;
+    if (/spa/.test(t)) return 120;
+    if (/museum|gallery|aquarium/.test(t)) return 90;
+    if (/zoo|motat/.test(t)) return 180;
+    if (/park|beach|viewpoint|gardens|domain/.test(t)) return 90;
+    if (/fishing|charter/.test(t)) return 240;
+    if (/stadium tour/.test(t)) return 90;
+    if (/match|game|event/.test(t)) return 150;
+
+    // Default
+    return 120;
+  }
+
+  function locationForActivity(a){
+    // Prefer explicit location if provided
+    if (a && a.location) return String(a.location);
+
+    const t = ((a?.title||"") + " " + (a?.region||"")).toLowerCase();
+
+    // Auckland core
+    if (t.includes("sky tower")) return "Sky Tower, Victoria St W, Auckland CBD";
+    if (t.includes("auckland museum")) return "Auckland Museum, The Domain, Parnell, Auckland";
+    if (t.includes("auckland art gallery")) return "Auckland Art Gallery Toi o Tāmaki, Wellesley St E, Auckland CBD";
+    if (t.includes("viaduct") || t.includes("wynyard") || t.includes("waterfront")) return "Viaduct Harbour / Wynyard Quarter, Auckland CBD";
+    if (t.includes("mission bay")) return "Mission Bay, Auckland";
+    if (t.includes("mount eden") || t.includes("maungawhau")) return "Maungawhau / Mount Eden, Auckland";
+    if (t.includes("cornwall park") || t.includes("one tree hill")) return "Cornwall Park / Maungakiekie (One Tree Hill), Auckland";
+    if (t.includes("kelly tarlton")) return "Kelly Tarlton’s Sea Life Aquarium, Tamaki Dr, Auckland";
+    if (t.includes("auckland zoo")) return "Auckland Zoo, Motions Rd, Western Springs, Auckland";
+    if (t.includes("motat")) return "MOTAT, Great North Rd, Western Springs, Auckland";
+    if (t.includes("eden park")) return "Eden Park, Reimers Ave, Kingsland, Auckland";
+
+    // Hauraki Gulf
+    if (t.includes("devonport")) return "Devonport Ferry Terminal / Devonport, Auckland";
+    if (t.includes("waiheke")) return "Waiheke Island (ferry from Downtown Ferry Terminal, Auckland)";
+    if (t.includes("tiritiri")) return "Tiritiri Matangi Island (ferry from Downtown Ferry Terminal, Auckland)";
+    if (t.includes("rangitoto")) return "Rangitoto Island (ferry from Downtown Ferry Terminal, Auckland)";
+
+    // Bay of Islands
+    if (t.includes("paihia") || t.includes("bay of islands") || t.includes("hole in the rock")) return "Paihia Wharf, Bay of Islands";
+    if (t.includes("russell")) return "Russell Wharf, Bay of Islands";
+    if (t.includes("waitangi")) return "Waitangi Treaty Grounds, Waitangi, Bay of Islands";
+    if (t.includes("cape reinga") || t.includes("90 mile")) return "Cape Reinga / 90 Mile Beach (tour departs Paihia)";
+
+    // Rotorua / Taupō
+    if (t.includes("polynesian spa")) return "Polynesian Spa, Hinemoa St, Rotorua";
+    if (t.includes("te puia")) return "Te Puia, Hemo Rd, Rotorua";
+    if (t.includes("huka falls")) return "Huka Falls Lookout, Taupō";
+
+    // Coromandel
+    if (t.includes("cathedral cove")) return "Whitianga (tour departs Whitianga Wharf)";
+    if (t.includes("hot water beach")) return "Hot Water Beach, Coromandel";
+
+    // South Island
+    if (t.includes("queenstown")) return "Queenstown CBD / Lake Wakatipu waterfront";
+    if (t.includes("milford")) return "Milford Sound (coach departs Queenstown)";
+    if (t.includes("nelson")) return "Nelson CBD (tour starts in Nelson)";
+    if (t.includes("otago") || t.includes("dunedin")) return "Dunedin (tour starts in Dunedin)";
+
+    // Default by region
+    if ((a?.region||"").includes("Bay of Islands")) return "Paihia, Bay of Islands";
+    if ((a?.region||"").includes("Auckland")) return "Auckland";
+    return a?.region || "";
+  }
+
+
+function money(n){ const v=Number(n); if (Number.isNaN(v)) return ""; return "NZ$"+v.toFixed(0); }
   function walkPill(w){
     if (w==="low") return '<span class="pill pillLow">Low walk</span>';
     if (w==="med") return '<span class="pill pillMed">Med walk</span>';
@@ -570,6 +748,7 @@
     if (a.rating==null) return false;
     return Number(a.rating) >= thr;
   }
+
   function parseMins(t){ const [h,m]=(t||"00:00").split(":").map(Number); return h*60+m; }
   function minsToTime(mins){
     const m=((mins%(24*60))+(24*60))%(24*60);
@@ -616,7 +795,92 @@
     if(!item.notes || !item.notes.trim()) item.notes=a.notes||"";
   }
 
-  // Drawer
+  // --- Calendar (.ics) export ---
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function toICSDateTime(dateStr, timeStr){
+    const y=dateStr.slice(0,4), mo=dateStr.slice(5,7), d=dateStr.slice(8,10);
+    const hh=(timeStr||"10:00").slice(0,2), mm=(timeStr||"10:00").slice(3,5);
+    return y+mo+d+"T"+hh+mm+"00";
+  }
+  function escapeICS(s){
+    return String(s||"")
+      .replace(/\\/g,"\\\\")
+      .replace(/\n/g,"\\n")
+      .replace(/,/g,"\\,")
+      .replace(/;/g,"\\;");
+  }
+  function makeEventICS(it){
+    const a = ACTIVITIES.find(x=>x.id===it.activityId) || {};
+    const dtStart = toICSDateTime(it.date, it.time);
+    const durMins = estimateDurationMins(a) || Number(state.timeRules?.slotMins || 120);
+    const base = new Date(it.date+"T"+(it.time||"10:00")+":00");
+    const end = new Date(base.getTime() + durMins*60000);
+    const dtEnd = end.getFullYear()+pad2(end.getMonth()+1)+pad2(end.getDate())+"T"+pad2(end.getHours())+pad2(end.getMinutes())+"00";
+
+    const title = a.title || "NZ Trip Activity";
+    const descParts = [];
+    if (a.overview) descParts.push(a.overview);
+    if (it.notes) descParts.push("Notes: "+it.notes);
+    if (it.transportUrl) descParts.push("Transport: "+it.transportUrl);
+    if (it.ratingUrl) descParts.push("Reviews: "+it.ratingUrl);
+    const desc = escapeICS(descParts.join("\n\n"));
+
+    const uidVal = (it.id || uid()) + "@nz-trip-planner";
+    return [
+      "BEGIN:VEVENT",
+      "UID:"+uidVal,
+      "DTSTAMP:"+toICSDateTime(todayISO(), "00:00"),
+      "SUMMARY:"+escapeICS(title),
+      "DTSTART;TZID=Pacific/Auckland:"+dtStart,
+      "DTEND;TZID=Pacific/Auckland:"+dtEnd,
+      "LOCATION:"+escapeICS(locationForActivity(a)),
+      (it.transportUrl ? ("URL:"+escapeICS(it.transportUrl)) : ""),
+      "DESCRIPTION:"+desc,
+      "END:VEVENT"
+    ].join("\r\n");
+  }
+  function downloadFile(filename, content, mime){
+    const blob = new Blob([content], {type: mime});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 5000);
+  }
+  function exportCalendarAll(){
+    const events = state.items
+      .slice()
+      .sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))
+      .map(makeEventICS)
+      .join("\r\n");
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//NZ Trip Planner//EN",
+      "CALSCALE:GREGORIAN",
+      events,
+      "END:VCALENDAR"
+    ].join("\r\n");
+    downloadFile("nz-trip-itinerary.ics", ics, "text/calendar;charset=utf-8");
+  }
+  function exportCalendarSingle(itemId){
+    const it = state.items.find(x=>x.id===itemId);
+    if (!it) return;
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//NZ Trip Planner//EN",
+      "CALSCALE:GREGORIAN",
+      makeEventICS(it),
+      "END:VCALENDAR"
+    ].join("\r\n");
+    downloadFile("nz-activity.ics", ics, "text/calendar;charset=utf-8");
+  }
+
+  // --- Drawer ---
   const openBtn = $("openDrawer");
   const closeBtn = $("closeDrawer");
   const backdrop = $("drawerBackdrop");
@@ -627,6 +891,7 @@
   backdrop.addEventListener("click", closeDrawer);
 
   function render(){
+    // controls
     $("budDay").value = state.budgets.day ?? 180;
     $("walkFilter").value = state.walkFilter;
     $("regionFilter").value = state.regionFilter;
@@ -635,83 +900,113 @@
     $("slotMins").value = state.timeRules.slotMins;
     $("breakMins").value = state.timeRules.breakMins;
 
+    // summary + buttons
     const total = state.items.reduce((a,it)=>a+(Number(it.cost)||0),0);
     $("summary").textContent = "Planned: "+state.items.length+" • Est. spend: "+money(total)+" • Budget/day: "+money(state.budgets.day)+(storageOk?"":" • (storage blocked, use export)");
+    $("toggleView").textContent = (state.viewMode==="list") ? "Card view" : "List view";
 
-    const wrap = $("itinerary");
+    // itinerary cards
+    const itineraryWrap = $("itinerary");
+    const listWrap = $("itineraryList");
     const dates=[...new Set(state.items.map(x=>x.date))].sort();
-    let out="";
-    for(const date of dates){
-      out += '<div class="dayHeader">'+esc(date)+'</div>';
-      const items = state.items.filter(it=>it.date===date);
-      for(const it of items){
-        const a = ACTIVITIES.find(x=>x.id===it.activityId) || {};
-        const over = overBudget(it.cost);
-        const rating = (it.rating!=null) ? ("★ "+Number(it.rating).toFixed(1)+(it.ratingCount?(" ("+it.ratingCount+")"):"")) : "";
-        out += `
-          <div class="card" data-id="${it.id}">
-            <div class="itTop">
-              <div style="flex:1; min-width:0;">
-                <div class="itTitle">${esc(a.title || it.activityId)}</div>
-                <div class="itDesc">${esc(a.overview || it.overview || "")}</div>
-                <div class="pills">
-                  ${walkPill(it.walk)}
-                  <span class="pill">${esc(it.region || "")}</span>
-                  ${freePill(a)}
-                  ${over ? '<span class="pill pillWarn">Over budget</span>' : ''}
-                  ${rating ? '<span class="pill">'+esc(rating)+'</span>' : ''}
+
+    if (state.viewMode === "list"){
+      itineraryWrap.style.display = "none";
+      listWrap.style.display = "block";
+      let txt = "";
+      for (const date of dates){
+        txt += date + "\n";
+        const items = state.items.filter(it=>it.date===date);
+        for (const it of items){
+          const a = ACTIVITIES.find(x=>x.id===it.activityId) || {};
+          txt += "  " + (it.time||"") + " — " + (a.title||it.activityId) + " (" + (it.region||"") + ", " + fmtDuration(estimateDurationMins(a)) + ")\n";
+        }
+        txt += "\n";
+      }
+      listWrap.innerHTML = `<div class="card"><div class="hint" style="margin-bottom:8px;">Copy-friendly list of your itinerary.</div><textarea readonly>${esc(txt)}</textarea></div>`;
+    } else {
+      itineraryWrap.style.display = "block";
+      listWrap.style.display = "none";
+
+      let out="";
+      for(const date of dates){
+        out += '<div class="dayHeader">'+esc(date)+'</div>';
+        const items = state.items.filter(it=>it.date===date);
+        for(const it of items){
+          const a = ACTIVITIES.find(x=>x.id===it.activityId) || {};
+          const over = overBudget(it.cost);
+          const rating = (it.rating!=null) ? ("★ "+Number(it.rating).toFixed(1)+(it.ratingCount?(" ("+it.ratingCount+")"):"")) : "";
+          out += `
+            <div class="card" data-id="${it.id}">
+              <div class="itTop">
+                <div style="flex:1; min-width:0;">
+                  <div class="itTitle">${esc(a.title || it.activityId)}</div>
+<div class="hint"><strong>Duration:</strong> ${esc(fmtDuration(estimateDurationMins(a)))}</div>
+                  <div class="itDesc">${esc(fullOverview(a))}</div>
+                  <div class="hint" style="margin-top:8px;">Location: ${esc(locationForActivity(a))}</div>
+                  <div class="pills">
+                    ${walkPill(it.walk)}
+                    <span class="pill">${esc(it.region || "")}</span>
+                    <span class="pill">Duration: ${esc(fmtDuration(estimateDurationMins(a)))}</span>
+                    ${freePill(a)}
+                    ${over ? '<span class="pill pillWarn">Over budget</span>' : ''}
+                    ${rating ? '<span class="pill">'+esc(rating)+'</span>' : ''}
+                  </div>
+                </div>
+                <button class="btn btnDanger" data-action="del" data-id="${it.id}" style="min-width:88px;">Delete</button>
+              </div>
+
+              <div class="grid2" style="margin-top:10px;">
+                <div>
+                  <label>Date</label>
+                  <input type="date" value="${esc(it.date)}" data-k="date" data-id="${it.id}">
+                </div>
+                <div>
+                  <label>Time</label>
+                  <input type="time" value="${esc(it.time)}" data-k="time" data-id="${it.id}">
                 </div>
               </div>
-              <button class="btn btnDanger" data-action="del" data-id="${it.id}" style="min-width:88px;">Delete</button>
-            </div>
 
-            <div class="grid2" style="margin-top:10px;">
-              <div>
-                <label>Date</label>
-                <input type="date" value="${esc(it.date)}" data-k="date" data-id="${it.id}">
-              </div>
-              <div>
-                <label>Time</label>
-                <input type="time" value="${esc(it.time)}" data-k="time" data-id="${it.id}">
-              </div>
-            </div>
+              <label style="margin-top:10px;">Activity</label>
+              <select data-k="activityId" data-id="${it.id}">
+                ${ACTIVITIES.map(x=>{
+                  const r = x.rating!=null ? (" — ★"+x.rating.toFixed(1)) : "";
+                  const f = (x.free || x.cost===0) ? " — Free" : "";
+                  return '<option value="'+x.id+'">'+esc(x.title + r + f)+'</option>';
+                }).join("")}
+              </select>
 
-            <label style="margin-top:10px;">Activity</label>
-            <select data-k="activityId" data-id="${it.id}">
-              ${ACTIVITIES.map(x=>{
-                const r = x.rating!=null ? (" — ★"+x.rating.toFixed(1)) : "";
-                const f = (x.free || x.cost===0) ? " — Free" : "";
-                return '<option value="'+x.id+'">'+esc(x.title + r + f)+'</option>';
-              }).join("")}
-            </select>
-
-            <div class="grid2" style="margin-top:10px;">
-              <div>
-                <label>Cost (NZD)</label>
-                <input type="number" min="0" step="5" value="${esc(it.cost)}" data-k="cost" data-id="${it.id}">
+              <div class="grid2" style="margin-top:10px;">
+                <div>
+                  <label>Cost (NZD)</label>
+                  <input type="number" min="0" step="5" value="${esc(it.cost)}" data-k="cost" data-id="${it.id}">
+                </div>
+                <div>
+                  <label>Notes</label>
+                  <input value="${esc(it.notes||"")}" data-k="notes" data-id="${it.id}">
+                </div>
               </div>
-              <div>
-                <label>Notes</label>
-                <input value="${esc(it.notes||"")}" data-k="notes" data-id="${it.id}">
+
+              <div class="itLinks">
+                ${transportLinksHtml(a) || `<a class="linkBtn" href="${esc(it.transportUrl)}" target="_blank" rel="noreferrer noopener">${esc(it.transportLabel || "Transport")}</a>`}
+                ${bookingLinkHtml(a)}
+                ${a.ratingUrl ? `<a class="linkBtn" href="${esc(a.ratingUrl)}" target="_blank" rel="noreferrer noopener">Reviews</a>` : (it.ratingUrl ? `<a class="linkBtn" href="${esc(it.ratingUrl)}" target="_blank" rel="noreferrer noopener">Reviews</a>` : ``)}
+                <button class="linkBtn" data-action="addIcs" data-id="${it.id}" type="button">Add to Calendar</button>
               </div>
             </div>
-
-            <div class="itLinks">
-              <a class="linkBtn" href="${esc(it.transportUrl)}" target="_blank" rel="noreferrer">${esc(it.transportLabel || "Transport")}</a>
-              ${it.ratingUrl ? '<a class="linkBtn" href="'+esc(it.ratingUrl)+'" target="_blank" rel="noreferrer">Reviews</a>' : ''}
-            </div>
-          </div>
-        `;
+          `;
+        }
       }
+      itineraryWrap.innerHTML = out;
+
+      itineraryWrap.querySelectorAll('select[data-k="activityId"]').forEach(sel=>{
+        const id = sel.dataset.id;
+        const it = state.items.find(x=>x.id===id);
+        if (it) sel.value = it.activityId;
+      });
     }
-    wrap.innerHTML = out;
 
-    wrap.querySelectorAll('select[data-k="activityId"]').forEach(sel=>{
-      const id = sel.dataset.id;
-      const it = state.items.find(x=>x.id===id);
-      if (it) sel.value = it.activityId;
-    });
-
+    // suggestions
     const sug = $("suggestions");
     const list = ACTIVITIES
       .filter(a=>withinWalk(a.walk))
@@ -721,17 +1016,26 @@
     sug.innerHTML = list.map(a=>{
       const over = overBudget(a.cost);
       const rating = (a.rating!=null) ? ("★ "+a.rating.toFixed(1)+(a.ratingCount?(" ("+a.ratingCount+")"):"")) : "★ n/a";
+      const linksHtml = transportLinksHtml(a);
+      const fallbackTransport = `<a class="linkBtn" href="${esc(LINKS.atPlanner.url)}" target="_blank" rel="noreferrer noopener">AT Planner</a>`;
       return `
         <div class="card">
           <div class="suggTitle">${esc(a.title)}</div>
-          <div class="suggDesc">${esc(a.overview || "")}</div>
+<div class="hint"><strong>Duration:</strong> ${esc(fmtDuration(estimateDurationMins(a)))}</div>
+          <div class="suggDesc">${esc(fullOverview(a))}</div>
           <div class="pills">
             ${walkPill(a.walk)}
             <span class="pill">${esc(a.region)}</span>
+            <span class="pill">Duration: ${esc(fmtDuration(estimateDurationMins(a)))}</span>
             ${freePill(a)}
             <span class="pill">${money(a.cost)} est.</span>
             <span class="pill">${esc(rating)}</span>
             ${over ? '<span class="pill pillWarn">Over budget</span>' : ''}
+          </div>
+          <div class="itLinks" style="margin-top:10px;">
+            ${linksHtml || fallbackTransport}
+            ${bookingLinkHtml(a)}
+            ${a.ratingUrl ? `<a class="linkBtn" href="${esc(a.ratingUrl)}" target="_blank" rel="noreferrer noopener">Reviews</a>` : ``}
           </div>
           <div class="suggFooter">
             <div class="hint">${a.notes ? esc(a.notes) : ""}</div>
@@ -769,6 +1073,7 @@
     render();
   }
 
+  // --- Wire controls ---
   $("budDay").addEventListener("input",(e)=>{ state.budgets.day = Number(e.target.value||0); render(); });
   $("walkFilter").addEventListener("change",(e)=>{ state.walkFilter = e.target.value; render(); closeDrawer(); });
   $("regionFilter").addEventListener("change",(e)=>{ state.regionFilter = e.target.value; render(); closeDrawer(); });
@@ -784,6 +1089,9 @@
   });
   $("addBuffer").addEventListener("click", ()=>addActivity("buffer","today"));
   $("reflowAll").addEventListener("click", ()=>{ reflowAll(); render(); });
+
+  $("toggleView").addEventListener("click", ()=>{ state.viewMode = (state.viewMode==="list") ? "cards" : "list"; render(); });
+  $("exportICS").addEventListener("click", exportCalendarAll);
 
   $("exportJson").addEventListener("click", ()=>{
     $("io").style.display = "block";
@@ -806,11 +1114,14 @@
       obj.regionFilter = obj.regionFilter || "All";
       obj.ratingFilter = obj.ratingFilter || "off";
       obj.timeRules = obj.timeRules || { dayStart:"10:00", slotMins:120, breakMins:45 };
+      obj.viewMode = obj.viewMode || "cards";
 
       obj.items.forEach(it=>{
-        if (!it.activityId || !ACTIVITIES.find(a=>a.id===it.activityId)) it.activityId = "buffer";
-        applyActivity(it, it.activityId);
         if (!it.id) it.id = uid();
+        if (!it.activityId || !ACTIVITIES.find(a=>a.id===it.activityId)) it.activityId = "buffer";
+        const savedCost = it.cost;
+        applyActivity(it, it.activityId);
+        if (savedCost != null && !Number.isNaN(Number(savedCost))) it.cost = savedCost;
         if (!it.date) it.date = todayISO();
         if (!it.time) it.time = obj.timeRules.dayStart || "10:00";
       });
@@ -828,6 +1139,7 @@
 
   $("reset").addEventListener("click", resetPlan);
 
+  // Delegated actions (buttons)
   document.body.addEventListener("click",(e)=>{
     const btn = e.target.closest("button");
     if (!btn) return;
@@ -845,8 +1157,10 @@
     }
     if (action==="addAct"){ addActivity(btn.dataset.act, "today"); return; }
     if (action==="addActTomorrow"){ addActivity(btn.dataset.act, "tomorrow"); return; }
+    if (action==="addIcs"){ exportCalendarSingle(btn.dataset.id); return; }
   });
 
+  // Delegated edits
   document.body.addEventListener("input",(e)=>{
     const t = e.target;
     const id = t.dataset.id;
@@ -857,7 +1171,10 @@
     if (!it) return;
 
     if (k==="activityId"){
+      const savedCost = it.cost;
       applyActivity(it, t.value);
+      // preserve user-edited cost if they changed it
+      if (savedCost != null && !Number.isNaN(Number(savedCost))) it.cost = savedCost;
       reflowDate(it.date);
       render();
       return;
@@ -879,6 +1196,7 @@
     }
   });
 
+  // Init
   reflowAll();
   render();
 })();
